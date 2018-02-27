@@ -1,0 +1,130 @@
+﻿@model LoginModel
+@using Nop.Web.Models.Customer;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Login").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-login-page");
+
+    //register URL with return URL (if specified)
+    var registerUrl = Url.RouteUrl("Register");
+    if (!String.IsNullOrEmpty(this.Context.Request.QueryString["returnUrl"]))
+    {
+        var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+        registerUrl = webHelper.ModifyQueryString(registerUrl, "returnurl=" + HttpUtility.UrlEncode(this.Context.Request.QueryString["returnUrl"]), null);
+    }
+}
+<div class="content-wrap pt-2">
+
+    <div class="container clearfix">
+        <div class="accordion accordion-lg divcenter nobottommargin clearfix" style="max-width: 550px;">
+            <div class="acctitle"><i class="acc-closed icon-lock3"></i><i class="acc-open icon-unlock"></i>Login to your Account</div>
+            <div class="acc_content clearfix">
+                @using (Html.BeginForm())
+                {
+                    var validationSummary = Html.ValidationSummary(true, T("Account.Login.Unsuccessful").Text);
+                   
+                    if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                    {
+                        <div class="message-error">@validationSummary</div>
+                    }
+
+
+                    if (Model.UsernamesEnabled)
+                    {
+                        <div class="col_full">
+                            @Html.LabelFor(m => m.Username, new { }, ":")
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(m => m.Username)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col_full">
+                            @Html.LabelFor(m => m.Email, new { }, ":")
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    }
+                    <div class="col_full">
+                        @Html.LabelFor(m => m.Password, new { }, ":")
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+
+                    <div class="col_full">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe)
+                       
+                    </div>
+
+
+
+                    <div class="col_full nobottommargin">
+                        <button class="button button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" type="submit" value="@T("Account.Login.LoginButton")">@T("Account.Login.LoginButton")</button>
+                        <span class="fright">
+                            @Html.RouteLink(T("Account.Login.ForgotPassword").Text, "PasswordRecovery")
+                        </span>
+
+                       
+                    </div>
+
+
+
+
+
+
+                   
+                    if (Model.DisplayCaptcha)
+                    {
+                        <div class="col_full">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                    }
+
+
+                  
+
+
+
+
+
+                    <div class="line line-sm"></div>
+                    <div class="center" style="display:none">
+                        <h4 style="margin-bottom: 15px;">or Login with:</h4>
+                        <a href="#" class="button button-rounded si-facebook si-colored">Facebook</a>
+                        <span class="hidden-xs">or</span>
+                        <a href="#" class="button button-rounded si-twitter si-colored">Twitter</a>
+                    </div>
+
+
+
+                }
+
+                <div>
+                    <a href="@Url.RouteUrl("Register")" class="ico-register"><i class="acc-closed icon-user4"></i><i class="acc-open icon-ok-sign"></i>New Signup? Register for an Account</a>
+                </div>
+
+            </div>
+            
+            
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    .required {
+        color: red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+</style>

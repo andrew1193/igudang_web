@@ -1,0 +1,141 @@
+﻿@{
+    //success messages
+    var successMessages = new List<string>();
+    if (TempData[string.Format("nop.notifications.{0}", NotifyType.Success)] != null)
+    {
+        successMessages.AddRange(TempData[string.Format("nop.notifications.{0}", NotifyType.Success)] as IList<string>);
+    }
+    if (ViewData[string.Format("nop.notifications.{0}", NotifyType.Success)] != null)
+    {
+        successMessages.AddRange(ViewData[string.Format("nop.notifications.{0}", NotifyType.Success)] as IList<string>);
+    }
+
+
+    //error messages
+    var errorMessages = new List<string>();
+    if (TempData[string.Format("nop.notifications.{0}", NotifyType.Error)] != null)
+    {
+        errorMessages.AddRange(TempData[string.Format("nop.notifications.{0}", NotifyType.Error)] as IList<string>);
+    }
+    if (ViewData[string.Format("nop.notifications.{0}", NotifyType.Error)] != null)
+    {
+        errorMessages.AddRange(ViewData[string.Format("nop.notifications.{0}", NotifyType.Error)] as IList<string>);
+    }
+
+
+    //warning messages
+    var warningMessages = new List<string>();
+    if (TempData[string.Format("nop.notifications.{0}", NotifyType.Warning)] != null)
+    {
+        warningMessages.AddRange(TempData[string.Format("nop.notifications.{0}", NotifyType.Warning)] as IList<string>);
+    }
+    if (ViewData[string.Format("nop.notifications.{0}", NotifyType.Warning)] != null)
+    {
+        warningMessages.AddRange(ViewData[string.Format("nop.notifications.{0}", NotifyType.Warning)] as IList<string>);
+    }
+}
+@if (successMessages.Count > 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var msg = [ @Html.Raw("'" + string.Join("', '", successMessages.Select(x => HttpUtility.JavaScriptStringEncode(x)).ToList()) + "'")];
+            displayPopupNotification(msg, 'success', false);
+        });
+    </script>
+}
+@if (errorMessages.Count > 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var msg = [ @Html.Raw("'" + string.Join("', '", errorMessages.Select(x => HttpUtility.JavaScriptStringEncode(x)).ToList()) + "'")];
+            displayPopupNotification(msg, 'error', false);
+        });
+    </script>
+}
+@if (warningMessages.Count > 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var msg = [ @Html.Raw("'" + string.Join("', '", warningMessages.Select(x => HttpUtility.JavaScriptStringEncode(x)).ToList()) + "'")];
+            displayPopupNotification(msg, 'warning', false);
+        });
+    </script>
+}
+
+<style>
+    .bar-notification {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 1080;
+        width: 100%;
+        font-size: 20px;
+        color: #fff;
+        opacity: 0.95;
+    }
+
+        .bar-notification.success {
+            background: #4fbb41;
+        }
+
+        .bar-notification.warning {
+            background: #f7960d;
+        }
+
+        .bar-notification.error {
+            background: #f74258;
+        }
+
+        .bar-notification .content {
+            float: left;
+            margin: 0 10px 0 0;
+        }
+
+            .bar-notification .content a {
+                color: #fff;
+                text-decoration: underline;
+            }
+
+        .bar-notification .close {
+            top: 0;
+            right: 0;
+            width: 31px;
+            height: 31px;
+            margin: 6px;
+            background: #fff url('../../Themes/IGudang/Content/images/close.png') center no-repeat;
+            cursor: pointer;
+        }
+
+            .bar-notification .close:hover {
+                outline: 1px solid #fff;
+            }
+
+    .noscript {
+        background-color: #ff9;
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+
+<div class="ajax-loading-block-window" style="display: none">
+</div>
+<div id="dialog-notifications-success" title="@T("Common.Notification")" style="display:none;">
+</div>
+<div id="dialog-notifications-error" title="@T("Common.Error")" style="display:none;">
+</div>
+<div id="dialog-notifications-warning" title="@T("Common.Warning")" style="display:none;">
+</div>
+<div id="bar-notification" class="bar-notification">
+    <span class="close" title="@T("Common.Close")" style="float:left">&nbsp;</span>
+</div>
+
+<input type="hidden" id="hfStrAddCartValues" name="hfStrAddCartValues" />
+<div class="modal fade" id="addtocart" tabindex="-1" role="dialog" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+    @Html.Action("CartAddedModal", "ShoppingCart")
+</div>
+
+
+<!-- Modal Reviews End -->
+
+@Html.Widget("notifications")

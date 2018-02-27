@@ -1,0 +1,58 @@
+﻿@model Nop.Web.Models.Customer.LoginModel
+
+
+@using Nop.Web.Framework.UI
+@using Nop.Web.Framework;
+@using Nop.Web.Framework.Security.Captcha;
+
+@using (Html.BeginForm("Login", "Customer"))
+{
+    <div class="login-popup">
+        @{
+    var validationSummary = Html.ValidationSummary(true, T("Account.Login.Unsuccessful").Text);   
+        }
+        @if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+        {
+        <div class="message-error">@validationSummary</div>
+        }
+        <div class="form-fields">
+            @if (Model.UsernamesEnabled)
+            {
+                <div class="inputs">
+                    @Html.LabelFor(m => m.Username, new { }, ":")
+                    @Html.TextBoxFor(m => m.Username, new { @class = "username", autofocus = "autofocus" })
+                    @Html.ValidationMessageFor(m => m.Username)
+                </div>
+            }
+            else
+            {
+                <div class="inputs">
+                    @Html.LabelFor(m => m.Email, new { }, ":")
+                    @Html.TextBoxFor(m => m.Email, new { @class = "email", autofocus = "autofocus" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+            }
+            <div class="inputs">
+                @Html.LabelFor(m => m.Password, new { }, ":")
+                @Html.PasswordFor(m => m.Password, new { @class = "password" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="inputs reversed">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+                <span class="forgot-password">
+                    @Html.RouteLink(T("Account.Login.ForgotPassword").Text, "PasswordRecovery")
+                </span>
+            </div>
+            @if (Model.DisplayCaptcha)
+            {
+                <div class="captcha-box">
+                    @Html.Raw(Html.GenerateCaptcha())
+                </div>
+            }
+        </div>
+        <div class="buttons">
+            <input class="button-1 login-button" type="submit" value="@T("Account.Login.LoginButton")" />
+        </div>
+    </div>
+}

@@ -1,0 +1,21 @@
+﻿@model IList<ProductOverviewModel>
+
+@using Nop.Web.Models.Catalog;
+@if (Model.Count > 0)
+{
+    <div class="container clearfix pt-2 ">
+        <div class="title carousel-title" style="text-align:center">
+            <h2>@T("Bestsellers")</h2>
+        </div>
+        <hr />
+        <div id="oc-images" class="owl-carousel image-carousel carousel-widget carousel-product" data-margin="10" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="6">
+            @foreach (var item in Model)
+            {
+                <div class="item-box">
+                    @Html.Partial("_ProductBoxBestSeller", item)
+                </div>
+            }
+        </div>
+        <div class="line"></div>
+    </div>
+}

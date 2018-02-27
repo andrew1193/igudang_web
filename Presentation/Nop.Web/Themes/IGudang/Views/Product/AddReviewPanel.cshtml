@@ -1,0 +1,84 @@
+﻿@model ProductReviewsModel
+@using Nop.Web.Models.Catalog;
+
+
+
+@using (Html.BeginForm("AddReviewFromPanel", "Product", FormMethod.Post, Model))
+{
+    @Html.AntiForgeryToken()
+    var validationSummary = Html.ValidationSummary(true);
+    if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+    {
+        <div class="message-error" id="divErrorMessage">@validationSummary</div>
+    }
+
+    <div class="fieldset">
+        <div class="form-fields">
+            <div class="inputs">
+                @Html.LabelFor(model => model.AddProductReview.Title, new { }, "*:")
+                @Html.TextBoxFor(model => model.AddProductReview.Title, Model.AddProductReview.CanCurrentCustomerLeaveReview ? (object)(new { @class = "required form-control" }) : (object)(new { @class = "review-title", disabled = "disabled" }))
+                @*@Html.RequiredHint()*@
+                @Html.ValidationMessageFor(model => model.AddProductReview.Title)
+            </div>
+            <div class="inputs">
+                @Html.LabelFor(model => model.AddProductReview.ReviewText, new { }, "*:")
+                @Html.TextAreaFor(model => model.AddProductReview.ReviewText, Model.AddProductReview.CanCurrentCustomerLeaveReview ? (object)(new { @class = "required form-control", @rows = "6" }) : (object)(new { @class = "review-text", disabled = "disabled" }))
+                @*@Html.RequiredHint()*@
+                @Html.ValidationMessageFor(model => model.AddProductReview.ReviewText)
+            </div>
+            <div class="review-rating">
+                @Html.LabelFor(model => model.AddProductReview.Rating, new { }, ":")
+                @Html.DropDownListFor(m => Model.AddProductReview.Rating, Model.AddProductReview.RateNums, new { @class = "form-control" })
+                @*<ul>
+                        <li class="label first">@T("Reviews.Fields.Rating.Bad")</li>
+                        <li class="rating-options">
+                            @Html.RadioButtonFor(model => model.AddProductReview.Rating, "1", new { id = "addproductrating_1" })
+                            @Html.RadioButtonFor(model => model.AddProductReview.Rating, "2", new { id = "addproductrating_2" })
+                            @Html.RadioButtonFor(model => model.AddProductReview.Rating, "3", new { id = "addproductrating_3" })
+                            @Html.RadioButtonFor(model => model.AddProductReview.Rating, "4", new { id = "addproductrating_4" })
+                            @Html.RadioButtonFor(model => model.AddProductReview.Rating, "5", new { id = "addproductrating_5" })
+                        </li>
+                        <li class="label last">@T("Reviews.Fields.Rating.Excellent")</li>
+                    </ul>*@
+            </div>
+            @if (Model.AddProductReview.DisplayCaptcha)
+                {
+                <div class="captcha-box">
+                    @Html.Raw(Html.GenerateCaptcha())
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+    <div class="col_full nobottommargin">
+        <input type="hidden" name="currentUrl" value="@Request.Url" />
+        <input type="hidden" name="productId" value="@Model.ProductId" />
+        <input type="submit" name="add-review" id="add-review" class="button button-3d nomargin" value="@T("Reviews.SubmitButton")" />
+    </div>
+}
+
+<script type="text/javascript">
+    $("#add-review").click(function () {
+        
+        var text = document.getElementById("divErrorMessage").innerHTML;
+        if (text != null || text != "") {
+            alert("Product can be reviewed only after purchasing it");
+            return false;
+        }
+
+        
+
+        if ($("#AddProductReview_Title").val() == null || $("#AddProductReview_Title").val() == "") {
+            alert("Please fill in title.");
+            return false;
+        }
+
+        if ($("#AddProductReview_ReviewText").val() == null || $("#AddProductReview_ReviewText").val() == "") {
+            alert("Please fill in review text.");
+            return false;
+        }
+
+        return true;
+        
+    });
+</script>

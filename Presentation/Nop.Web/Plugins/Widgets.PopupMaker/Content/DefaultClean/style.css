@@ -1,0 +1,101 @@
+﻿#popup, .bMulti {
+    background-color: #fff;
+    border-radius: 0;
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.15);
+    box-shadow: 0 0 2px rgba(0,0,0,0.15);
+    font: normal 14px Arial, Helvetica, sans-serif;
+    color: #777;
+    display: none;
+    width: 500px;
+    max-width: 90%;
+    min-height: 250px;
+    padding: 0;
+    position: relative;
+}
+
+    #popup > .panel, .bMulti > .panel {
+        padding: 0;
+        margin: 0;
+    }
+
+    #popup .panel-heading {
+        padding: 12px 25px;
+    }
+
+    #popup .panel-body {
+        padding: 25px;
+    }
+
+    #popup .panel-heading {
+        border-bottom: 1px solid #ddd;
+        background: #eee;
+    }
+
+        #popup .panel-heading h3 {
+            font-size: 18px;
+            color: #444;
+            padding: 0 10px 0 0;
+            margin: 0;
+        }
+
+            #popup .panel-heading h3 strong {
+                font-weight: normal;
+            }
+
+    #popup .b-close {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 46px;
+        background-image: url(close.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+        #popup .b-close:hover {
+            opacity: .7;
+        }
+
+    /*--- Login Popup ---*/
+
+    #popup .login-popup .form-fields {
+        background: #fff;
+        padding: 0;
+        border: 0;
+    }
+
+    #popup .login-popup .inputs label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    #popup .login-popup .inputs label, .message-error, .field-validation-error, .username-not-available-status, .poll-vote-error, .password-error, .inputs.reversed {
+        text-align: left;
+    }
+
+    #popup .login-popup .inputs.reversed label {
+        display: inline;
+        padding: 0 5px;
+    }
+
+    #popup .login-popup .inputs input[type=text], #popup .login-popup .inputs input[type=password] {
+        width: 100%;
+    }
+
+.button-1 {
+    min-width: 140px;
+    border: none;
+    background-color: #4ab2f1;
+    padding: 10px 30px;
+    text-align: center;
+    font-size: 15px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+    .button-1:hover {
+        background-color: #248ece;
+    }

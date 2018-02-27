@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.Payments.GHLDirect.Models.PaymentProcessingModel
+@using Nop.Core.Infrastructure
+@using Nop.Web.Framework;
+@using Nop.Web.Framework.UI;
+
+<script src="@Url.Content("~/Plugins/Payments.GHLDirect/Scripts/jquery-1.10.2.min.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').get(0).setAttribute('action', '@Model.GHLDirectAPIUrl');
+        $('form').get(0).setAttribute('name', 'frmPayment');
+        $('form').get(0).setAttribute('method', 'post');
+       
+        $('form').get(0).submit();
+    });
+</script>
+
+<table border="0" width="100%">
+    <tr><td style="text-align:center"><img src="@Url.Content("~/Plugins/Payments.GHLDirect/Content/Images/ajax_loader_large.gif")" alt="Processing..." /></td></tr>
+    <tr><td>&nbsp;</td></tr>
+    <tr><td style="text-align:center">@T("Plugins.Payments.GHLDirect.Fields.PaymentProcessingTip")</td></tr>
+</table>
+
+@using (Html.BeginForm())
+{
+
+@Html.HiddenFor(model => model.TransactionType, new {id=(string)null, name = "TransactionType" })
+@Html.HiddenFor(model => model.PymtMethod, new {id=(string)null, name = "PymtMethod" })
+@Html.HiddenFor(model => model.ServiceID, new {id=(string)null,  name = "ServiceID" })
+@Html.HiddenFor(model => model.PaymentID, new {id=(string)null,  name = "PaymentID" })
+@Html.HiddenFor(model => model.OrderNumber, new {id=(string)null,  name = "OrderNumber" })
+@Html.HiddenFor(model => model.PaymentDesc, new {id=(string)null,  name = "PaymentDesc" })
+@Html.HiddenFor(model => model.MerchantReturnURL, new {id=(string)null,  name = "MerchantReturnURL" })
+@Html.HiddenFor(model => model.MerchantCallBackURL, new { id = (string)null, name = "MerchantCallBackURL" })
+
+
+@*@Html.HiddenFor(model => model.MerchantUnApprovalURL, new {id=(string)null,  name = "MerchantUnApprovalURL" })*@
+@Html.HiddenFor(model => model.Amount, new {id=(string)null,  name = "Amount" })
+@Html.HiddenFor(model => model.CurrencyCode, new {id=(string)null,  name = "CurrencyCode" })
+if(!string.IsNullOrEmpty(Model.PageTimeout))
+{
+       @Html.HiddenFor(model => model.PageTimeout, new {id=(string)null,  name = "PageTimeout" })
+}
+@Html.HiddenFor(model => model.CustIP, new {id=(string)null,  name = "CustIP" })      
+@Html.HiddenFor(model => model.CustName, new {id=(string)null,  name = "CustName" })
+@Html.HiddenFor(model => model.CustEmail, new {id=(string)null,  name = "CustEmail" })
+@Html.HiddenFor(model => model.CustPhone, new {id=(string)null,  name = "CustPhone" })
+
+@Html.HiddenFor(model => model.HashValue, new {id=(string)null,  name = "HashValue" })
+      
+@Html.HiddenFor(model => model.MerchantName, new {id=(string)null,  name = "MerchantName" })
+@Html.HiddenFor(model => model.LanguageCode, new {id=(string)null,  name = "LanguageCode" })
+
+@Html.HiddenFor(model => model.BillAddr, new {id=(string)null,  name = "BillAddr" })
+@Html.HiddenFor(model => model.BillPostal, new {id=(string)null,  name = "BillPostal" })
+@Html.HiddenFor(model => model.BillCity, new {id=(string)null,  name = "BillCity" })
+@Html.HiddenFor(model => model.BillRegion, new {id=(string)null,  name = "BillRegion" })
+@Html.HiddenFor(model => model.BillCountry, new {id=(string)null,  name = "BillCountry" })
+  
+@Html.HiddenFor(model => model.ShipAddr, new {id=(string)null,  name = "ShipAddr" })
+@Html.HiddenFor(model => model.ShipPostal, new {id=(string)null,  name = "ShipPostal" })
+@Html.HiddenFor(model => model.ShipCity, new {id=(string)null,  name = "ShipCity" })
+@Html.HiddenFor(model => model.ShipRegion, new {id=(string)null,  name = "ShipRegion" })
+@Html.HiddenFor(model => model.ShipCountry, new {id=(string)null,  name = "ShipCountry" }) 
+      
+}

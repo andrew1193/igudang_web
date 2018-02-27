@@ -1,0 +1,83 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+@{
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.min.js");
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+}
+
+<div class="product-image" style="overflow: visible;">
+    <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-lightbox="gallery" data-margin="0" data-items="1" data-pagi="false" data-loop="false">
+        @foreach (var picture in Model.PictureModels)
+        {
+            <div class="oc-item">
+                <a href="@picture.ImageUrl" title="@picture.Title" data-lightbox="gallery-item"><img src="@picture.ImageUrl" alt="@picture.AlternateText" title="@picture.Title" data-defaultsize="@picture.ImageUrl" data-fullsize="@picture.FullSizeImageUrl" /></a>
+            </div>
+        }
+    </div>
+</div><!-- Product Single - Gallery End -->
+<div id="linked-to-gallery" style="margin-top: 4px;">
+    <div id="oc-images-linker" class="owl-carousel image-carousel carousel-widget" data-lightbox="gallery" data-margin="4" data-items="4" data-pagi="false" data-loop="false">
+        @foreach (var picture in Model.PictureModels)
+        {
+            <div class="oc-item">
+                <a href="@picture.ImageUrl" data-image="1" data-lightbox="gallery-item"><img src="@picture.ImageUrl" alt="@picture.AlternateText" class="image_fade" /></a>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+@*<div class="gallery">
+    <div class="picture">
+        @if (Model.DefaultPictureZoomEnabled)
+        {
+            <a href="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" id="main-product-img-lightbox-anchor-@Model.Id">
+                <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+            </a>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#main-product-img-lightbox-anchor-@Model.Id').magnificPopup(
+                    {
+                        type: 'image',
+                        removalDelay: 300,
+                        gallery: {
+                            enabled: true,
+                            tPrev: '@T("Media.MagnificPopup.Previous")',
+                            tNext: '@T("Media.MagnificPopup.Next")',
+                            tCounter: '@T("Media.MagnificPopup.Counter")'
+                        },
+                        tClose: '@T("Media.MagnificPopup.Close")',
+                        tLoading: '@T("Media.MagnificPopup.Loading")'
+                    });
+                });
+            </script>
+        }
+        else
+        {
+            <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+        }
+    </div>
+    @if (Model.PictureModels.Count > 1)
+    {
+        <div class="picture-thumbs">
+            @foreach (var picture in Model.PictureModels)
+            {
+                <div class="thumb-item">
+                    <img src="@picture.ThumbImageUrl" alt="@picture.AlternateText" title="@picture.Title" data-defaultsize="@picture.ImageUrl" data-fullsize="@picture.FullSizeImageUrl" />
+                </div>
+            }
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.thumb-item img').on('click', function () {
+                    $('#main-product-img-@Model.Id').attr('src', $(this).attr('data-defaultsize'));
+                    $('#main-product-img-@Model.Id').attr('title', $(this).attr('title'));
+                    $('#main-product-img-@Model.Id').attr('alt', $(this).attr('alt'));
+                    $('#main-product-img-lightbox-anchor-@Model.Id').attr('href', $(this).attr('data-fullsize'));
+                    $('#main-product-img-lightbox-anchor-@Model.Id').attr('title', $(this).attr('title'));
+                });
+            });
+        </script>
+    }
+</div>*@

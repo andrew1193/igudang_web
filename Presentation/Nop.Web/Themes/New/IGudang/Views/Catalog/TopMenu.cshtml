@@ -1,0 +1,81 @@
+﻿@model TopMenuModel
+@using Nop.Web.Models.Catalog;
+
+@helper RenderCategoryLine(CategorySimpleModel category, int level, bool responsiveMobileMenu)
+{
+    <li>
+        <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">
+            @category.Name
+
+        </a>
+
+    </li>
+}
+
+
+
+
+@Html.Widget("header_menu_before")
+
+<div class="widget clearfix">
+    <h4>Categories</h4>
+    <nav class="nav-tree nobottommargin">
+        <ul>
+
+            @{
+                var rootCategories = Model.Categories.Where(x => x.IncludeInTopMenu).ToList();
+            }
+            @foreach (var category in rootCategories)
+            {
+                @RenderCategoryLine(category, 0, false)
+            }
+
+
+
+
+        </ul>
+    </nav>
+</div>
+
+<div class="widget quick-contact-widget clearfix">
+    <h4>Quick Link</h4>
+    <nav class="nav-tree nobottommargin">
+        <ul>
+            @foreach (var topic in Model.Topics)
+            {
+                <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>
+            }
+            @if (Model.NewProductsEnabled && Model.DisplayNewProductsMenuItem)
+            {
+                <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
+            }
+            @if (Model.DisplayProductSearchMenuItem)
+            {
+                <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a></li>
+            }
+            @if (Model.DisplayCustomerInfoMenuItem)
+            {
+                <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
+            }
+            @if (Model.BlogEnabled && Model.DisplayBlogMenuItem)
+            {
+                <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
+            }
+            @if (Model.ForumEnabled && Model.DisplayForumsMenuItem)
+            {
+                <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
+            }
+            @if (Model.DisplayContactUsMenuItem)
+            {
+                <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
+            }
+        </ul>
+    </nav>
+
+</div>
+
+
+@Html.Widget("mob_header_menu_after")
+
+
+

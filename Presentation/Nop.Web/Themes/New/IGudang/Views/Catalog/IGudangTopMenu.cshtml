@@ -1,0 +1,64 @@
+﻿@using Nop.Web.Models.Catalog
+
+@model TopMenuModel
+
+@{
+    var isRtl = this.ShouldUseRtlTheme();
+}
+
+@helper RenderCategoryLine(CategorySimpleModel category, bool isTopLevel = false)
+{
+    <li @if (isTopLevel) { <text> class="root-category-items" </text>  }>
+        @if (category.SubCategories.Count > 0)
+        {
+            <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name</a>
+                    <ul>
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            @RenderCategoryLine(subCategory)
+                        }
+                    </ul>
+        }
+        else
+        {
+            if (category.NumberOfProducts.HasValue)
+            {
+                <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name @T("Categories.TotalProducts", category.NumberOfProducts.Value)</a>
+            }
+            else
+            {
+                <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name</a>
+            }
+        }
+    </li>
+}
+
+<input type="hidden" value="@isRtl.ToString().ToLowerInvariant()" id="isRtlEnabled" />
+
+<ul>
+    <li>
+        <a href="#"><i class="icon-bag"></i>Categories</a>
+        <ul>
+            @{
+                var topMenuCategories = Model.Categories.Where(x => x.IncludeInTopMenu).ToList();
+            }
+            @foreach (var category in topMenuCategories)
+            {
+                @RenderCategoryLine(category, true)
+            }
+
+
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="icon-file-text"></i>About</a>
+        <ul>
+            <li><a href="#">Company</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">FAQs</a></li>
+        </ul>
+    </li>
+   
+    <li><a href="@Url.RouteUrl("ContactUs")"><i class="icon-map-marker"></i>@T("ContactUs")</a></li>
+</ul>

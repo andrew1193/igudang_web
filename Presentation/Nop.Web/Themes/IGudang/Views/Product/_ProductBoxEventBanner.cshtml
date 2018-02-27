@@ -1,0 +1,85 @@
+﻿@using Nop.Web.Models.Catalog;
+@using Nop.Core.Domain.Orders
+@model ProductOverviewModel
+
+@{
+    //prepare "Add to cart" AJAX link
+    string addtocartlink = "";
+    var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+    var quantity = 1;
+    if (Model.ProductPrice.ForceRedirectionAfterAddingToCart)
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+    }
+    else
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity });
+    }
+
+    var addtowishlistlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.Wishlist, quantity = quantity });
+    var addtocomparelink = Url.RouteUrl("AddProductToCompare", new { productId = Model.Id });
+}
+
+<div class="col-md-4 product-col oc-item" data-productid="@Model.Id">
+    <div class="product-list-wrap">
+        <figure>
+            <ul class="list-unstyled item-tag">
+                @if (Model.ProductPrice.OldPriceValue > 0)
+            {
+                decimal discount = Math.Round((Model.ProductPrice.OldPriceValue - Model.ProductPrice.PriceValue) / Model.ProductPrice.OldPriceValue * 100, 0);
+                    <li>
+                        <div class="sale-flash">
+                            <span class="tag">@discount%</span>
+                        </div>
+                    </li>
+                }
+            </ul>
+            @if (Model.MarkAsSellingFast)
+            {
+                <div class="selling-fast">
+                    <img src="~/Themes/IGudang/Content/images/tag-selling-fast.png">
+                </div>
+            }
+            <div class="picture">
+                @if (Model.MarkAsBestSeller)
+                {
+                    <div class="best-sale">
+                        <img src="~/Themes/IGudang/Content/images/tag-best-sale.png">
+                    </div>
+                }
+                <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                    <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+                </a>
+            </div>
+        </figure>
+        
+        
+        <div class="product-short-des">
+            <header class="product-name">
+                <h3> <a href="@Url.RouteUrl("Product", new {SeName = Model.SeName})">@Model.Name</a> </h3>
+            </header>
+            <section class="item-price">
+                @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice))
+                {
+                    <span class="price old-price"><del>@Model.ProductPrice.OldPrice</del></span>
+                }
+                <span class="price actual-price" style="color:red">@Model.ProductPrice.Price</span>
+            </section>
+            <footer class="item-add">
+                @if (!Model.ProductPrice.DisableBuyButton)
+                {
+                    var addToCartText = T("ShoppingCart.AddToCart").Text;
+                    if (Model.ProductPrice.IsRental)
+                    {
+                        addToCartText = T("ShoppingCart.Rent").Text;
+                    }
+                    if (Model.ProductPrice.AvailableForPreOrder)
+                    {
+                        addToCartText = T("ShoppingCart.PreOrder").Text;
+                    }
+                    <input type="button" value="@(addToCartText)" class="btn btn-igudang" onclick="AjaxCart.addproducttocart_catalog('@addtocartlink');return false;" />
+                }
+            </footer>
+        </div>
+    </div>
+</div>

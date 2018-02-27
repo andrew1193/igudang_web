@@ -1,0 +1,42 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+
+
+@*<div class="fright clearfix top-social-share">
+        <span style="float: left;">Share</span>
+        <a href="#" class="social-icon si-rounded si-xsmall si-colored si-facebook nobottommargin">
+            <i class="icon-facebook"></i>
+            <i class="icon-facebook"></i>
+        </a>
+
+        <a href="#" class="social-icon si-rounded si-xsmall si-colored si-twitter nobottommargin">
+            <i class="icon-twitter"></i>
+            <i class="icon-twitter"></i>
+        </a>
+        <a href="#" class="social-icon si-rounded si-xsmall si-colored si-pinterest nobottommargin">
+            <i class="icon-pinterest"></i>
+            <i class="icon-pinterest"></i>
+        </a>
+        <a href="#" class="social-icon si-rounded si-xsmall si-colored si-yahoo nobottommargin">
+            <i class="icon-yahoo"></i>
+            <i class="icon-yahoo"></i>
+        </a>
+        <a href="#" class="social-icon si-rounded si-xsmall si-colored si-linkedin si-border nobottommargin">
+            <i class="icon-linkedin"></i>
+            <i class="icon-linkedin"></i>
+        </a>
+    </div>*@
+
+
+
+
+@if (!String.IsNullOrWhiteSpace(Model.PageShareCode))
+{
+    <div class="fright clearfix top-social-share">
+        <div class="product-share-button">
+            <span style="float: left;">Share</span> 
+            @Html.Raw(Model.PageShareCode)
+        </div>
+    </div>
+    
+}

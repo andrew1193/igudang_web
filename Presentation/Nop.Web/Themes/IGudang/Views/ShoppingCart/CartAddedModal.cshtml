@@ -1,0 +1,149 @@
+﻿@using Nop.Web.Models.ShoppingCart
+@model CartAddedModel
+
+@if (Model.ProductName != null)
+{
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                @if (Model.cartTypeId == 1)
+                {
+                    <h5 class="modal-title" id="reviewFormModalLabel">@Model.Quantity New item has been add into your cart</h5>
+                }
+                else if (Model.cartTypeId == 2)
+                {
+                    <h5 class="modal-title" id="reviewFormModalLabel">@Model.Quantity New item has been add into your wishlist</h5>
+                }
+            </div>
+            <div class="modal-body checkout">
+                <div class="row mb-2">
+                    <div class="col-md-6 border-right">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="product-thumb">
+                                    <img src="@Model.ProductPictureUrl">
+                                </div>
+                            </div>
+                            <div class="col-xs-8">
+                                <h6 class="nobottommargin"></h6>
+                                <ul class="list-unstyled">
+                                    @if (Model.ProductAttributeSelected.Count > 0)
+                                    {
+                                        foreach (var item in Model.ProductAttributeSelected)
+                                        {
+                                            <li>@item</li>
+                                        }
+                                    }
+                                    <li><ins style="color:red">@Model.StrPrice</ins></li>
+                                    <li><del>@Model.StrOldPrice</del></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.cartTypeId == 1)
+                    {
+                        <div class="col-md-6">
+                            <div class="checkout-row-section bottomborder mb-1">
+                                <h6 class="nobottommargin">My shopping cart <span class="light-title">(@if (Model.ShoppingCartOrWishlist.ItemCount > 0)
+                                { <text> @Model.ShoppingCartOrWishlist.ItemCount items</text> }
+                                else
+                                { <text> @Model.ShoppingCartOrWishlist.ItemCount item</text> })</span></h6>
+                                <ul class="list-inline mb-1 clearfix">
+                                    <li class="fleft">Sub Total</li>
+                                    <li class="fright">@Model.ShoppingCartOrWishlist.SubTotal</li>
+                                </ul>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="checkout-row-section">
+                                <ul class="list-inline mb-1 clearfix">
+                                    <li class="fleft bold-text">Total</li>
+                                    <li class="fright bold-text">@Model.ShoppingCartOrWishlist.Total</li>
+                                </ul>
+                                <div class="clear"></div>
+                                <ul class="list-inline text-right">
+                                    <li><a href="javascript:window.location.href=window.location.href" class="button igudang-checkout-btn">Continue Shopping</a></li>
+                                    <li><a href="@Url.RouteUrl("ShoppingCart")" class="button igudang-checkout-btn checkout">Check Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else if (Model.cartTypeId == 2)
+                    {
+                        <div class="col-md-6">
+                            <div class="checkout-row-section bottomborder mb-1">
+                                <h6 class="nobottommargin">
+                                    My wishlist item <span class="light-title">
+                                        (@if (Model.ShoppingCartOrWishlist.ItemCount > 0)
+                                        { <text> @Model.ShoppingCartOrWishlist.ItemCount items</text> }
+                                        else
+                                        { <text> @Model.ShoppingCartOrWishlist.ItemCount item</text> })
+                                    </span>
+                                </h6>
+                                <ul class="list-inline mb-1 clearfix">
+                                    <li class="fleft">Sub Total</li>
+                                    <li class="fright">@Model.ShoppingCartOrWishlist.SubTotal</li>
+                                </ul>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="checkout-row-section">
+                                <ul class="list-inline mb-1 clearfix">
+                                    <li class="fleft bold-text">Total</li>
+                                    <li class="fright bold-text">@Model.ShoppingCartOrWishlist.Total</li>
+                                </ul>
+                                <div class="clear"></div>
+                                <ul class="list-inline text-right">
+                                    <li><a href="javascript:window.location.href=window.location.href" class="button igudang-checkout-btn">Continue Shopping</a></li>
+                                    <li><a href="@Url.RouteUrl("wishlist")" class="button igudang-checkout-btn checkout">Go To Wishlist</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    @*<div class="col-md-6">
+                            <div class="checkout-row-section bottomborder mb-1">
+                                <h6 class="nobottommargin">
+                                    @if (Model.cartTypeId == 1)
+                                    { <text>My shopping cart</text> }
+                                    else if (Model.cartTypeId == 2)
+                                    {  <text>My wishlist item</text> } <span class="light-title">(@Model.Quantity)</span>
+                                </h6>
+                                <ul class="list-inline mb-1 clearfix">
+                                    <li class="fleft">Sub Total</li>
+                                    <li class="fright">@Model.StrSubTotal</li>
+                                </ul>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="checkout-row-section">
+                                <ul class="list-inline mb-1 clearfix">
+                                    <li class="fleft bold-text">Total</li>
+                                    <li class="fright bold-text">@Model.StrTotal</li>
+                                </ul>
+                                <div class="clear"></div>
+                                <ul class="list-inline text-right">
+                                    <li><a href="javascript:window.location.href=window.location.href" class="button igudang-checkout-btn">Continue Shopping</a></li>
+                                    @if (Model.cartTypeId == 1)
+                                    {
+                                        <li><a href="@Url.RouteUrl("ShoppingCart")" class="button igudang-checkout-btn checkout">Check Out</a></li>
+                                    }
+                                    else if (Model.cartTypeId == 2)
+                                    {
+                                        <li><a href="@Url.RouteUrl("wishlist")" class="button igudang-checkout-btn checkout">Go To Wishlist</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>*@
+                </div>
+
+
+                @Html.Action("ProductsAlsoPurchased2", "Product", new { productId = Model.ProductId })
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+}
+
+

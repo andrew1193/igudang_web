@@ -1,0 +1,151 @@
+﻿@model ContactUsModel
+@using Nop.Web.Models.Common;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ContactUs").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-contact-page");
+}
+
+
+<div class="content-wrap pt-2">
+
+    <div class="container clearfix">
+        <div class="accordion accordion-lg divcenter nobottommargin clearfix" style="max-width: 550px;">
+            <div class="acctitle"><i class="acc-closed icon-lock3"></i><i class="acc-open icon-info"></i>@T("PageTitle.ContactUs")</div>
+            <div class="acc_content clearfix">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col_full">
+                        @Html.LabelFor(model => model.FullName)@Html.RequiredHint()
+                        @Html.TextBoxFor(model => model.FullName, new { @class = "form-control" })
+                        @*<input type="text" asp-for="FullName" name="register-form-name" value="" class="form-control" />*@
+                        @Html.ValidationMessageFor(model => model.FullName)
+                    </div>
+                    <div class="col_full">
+                        @Html.LabelFor(model => model.Email)@Html.RequiredHint()
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                        @*<input type="text" asp-for="Email" name="register-form-name" value="" class="form-control" />*@
+
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+
+                    if (Model.SubjectEnabled)
+                    {
+                        <div class="col_full nobottommargin">
+                            @Html.LabelFor(model => model.Subject)
+                            @Html.DropDownListFor(x => x.Subject, new List<SelectListItem>
+                                {
+                                                    new SelectListItem() {Text = "Tech Support", Value="Tech Support"},
+                                                    new SelectListItem() {Text = "General Inquiry", Value="General Inquiry"},
+                                                    new SelectListItem() {Text = "Feedback", Value="Feedback"}
+                                }, new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.Subject)
+
+
+                        </div>
+                    }
+
+
+
+
+
+
+
+                    <div class="col_full nobottommargin">
+                        @Html.LabelFor(model => model.Enquiry)
+
+                        @Html.TextAreaFor(model => model.Enquiry, new { @class = "form-control" })
+                        @*<textarea asp-for="Enquiry" name="register-form-name" value="" class="form-control"></textarea>*@
+
+                        @Html.ValidationMessageFor(model => model.Enquiry)
+
+
+                    </div>
+
+
+
+
+
+                    if (Model.DisplayCaptcha)
+                    {
+                        <div class="col_full">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                    }
+
+
+
+
+                    <div class="line line-sm"></div>
+                    <div class="center">
+
+                        <button class="button button-3d button-black nomargin" id="login-form-submit" type="submit" name="send-email">@T("ContactUs.Button")</button>
+
+                        <input type="hidden" id="hfViewBagVal" value="@ViewBag.Message" />
+
+                    </div>
+                }
+
+
+                @if (ViewBag.Message != null)
+                {
+
+                    <div class="modal fade" id="contactusresult" tabindex="-1" role="dialog" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content col-lg-12">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <h3>@ViewBag.Message</h3>
+                                    </div>
+                                    <div class="row pull-right">
+                                        <a class="btn btn-default" href="@Url.RouteUrl("contactus")">OK</a>
+                                    </div>
+                                    <br />
+                                    <br />
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+                        window.onload = function () {
+                            $('#contactusresult').modal('show');
+                        };
+                    </script>
+                }
+
+
+
+                @*<script type="text/javascript">
+                        window.onload = function () {
+                            alert("@ViewBag.Message");
+                        };
+                    </script>*@
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    .required {
+        color: red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+</style>
+
+

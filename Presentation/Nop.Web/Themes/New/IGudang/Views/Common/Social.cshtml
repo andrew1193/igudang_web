@@ -1,0 +1,74 @@
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Services.Configuration
+
+@model Nop.Web.Models.Common.SocialModel
+
+@{
+    var storeId = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.Id;
+    var settingService = EngineContext.Current.Resolve<ISettingService>();
+    var instagramUrl = settingService.GetSettingByKey("pavilionthemesettings.instagramurl", String.Empty, storeId, true);
+    var pinterestUrl = settingService.GetSettingByKey("pavilionthemesettings.pinteresturl", String.Empty, storeId, true);
+    var vimeoUrl = settingService.GetSettingByKey("pavilionthemesettings.vimeourl", String.Empty, storeId, true);
+}
+
+<ul class="social-sharing">
+    @if (!String.IsNullOrEmpty(Model.TwitterLink))
+    {
+	
+	<a target="_blank" href="@Model.TwitterLink" class="social-icon si-rounded si-small si-colored si-twitter">
+								<i class="icon-twitter"></i>
+								<i class="icon-twitter"></i>
+							</a>
+							
+		
+    }
+    @if (!String.IsNullOrEmpty(Model.FacebookLink))
+    {
+
+	<a target="_blank" href="@Model.FacebookLink" class="social-icon si-rounded si-small si-colored si-facebook">
+								<i class="icon-facebook"></i>
+								<i class="icon-facebook"></i>
+							</a>
+							
+							
+       
+    }
+
+
+    @if (!String.IsNullOrEmpty(Model.InstragramLink))
+    {
+        <a href="@Model.InstragramLink" class="social-icon si-rounded si-small si-colored si-instagram">
+            <i class="icon-instagram2"></i>
+            <i class="icon-instagram2"></i>
+        </a>
+
+
+    }
+    @if (!String.IsNullOrEmpty(pinterestUrl))
+    {
+			<a target="_blank" href="@pinterestUrl class="social-icon si-rounded si-small si-colored si-pinterest">
+								<i class="icon-pinterest"></i>
+								<i class="icon-pinterest"></i>
+							</a>
+							
+							
+      
+    }
+    @*@if (!String.IsNullOrEmpty(Model.YoutubeLink))
+    {
+        <li class="youtube"><a target="_blank" href="@Model.YoutubeLink"></a></li>
+    }
+    @if (!String.IsNullOrEmpty(Model.GooglePlusLink))
+    {
+        <li class="google"><a target="_blank" href="@Model.GooglePlusLink"></a></li>
+    }
+    @if (!String.IsNullOrEmpty(vimeoUrl))
+    {
+        <li class="vimeo"><a target="_blank" href="@vimeoUrl"></a></li>
+    }
+    @if (Model.NewsEnabled)
+    {
+        <li class="rss"><a target="_blank" href="@Url.RouteUrl("NewsRSS", new {languageId = Model.WorkingLanguageId})"></a></li>
+    }*@
+</ul>

@@ -1,0 +1,132 @@
+﻿@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Services.Configuration
+@using Nop.Web.Models.Common
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Common;
+@using Nop.Web.Framework.Themes
+@using Nop.Web.Framework.UI
+
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AppendCssFileParts("~/Themes/Pavilion/Content/css/owl.carousel.css");
+    Html.AddScriptParts("~/Themes/Pavilion/Content/scripts/owl.carousel.min.js");
+
+    //page class
+    Html.AppendPageCssClassParts("html-home-page");
+    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
+    var themeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    var storeId = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.Id;
+    var settingService = EngineContext.Current.Resolve<ISettingService>();
+    var removeCopyright = settingService.GetSettingByKey("pavilionthemesettings.removecopyright", false, storeId, true);
+    var removeDesignedBy = settingService.GetSettingByKey("pavilionthemesettings.removedesignedby", false, storeId, true);
+}
+
+<script>
+
+   
+    //if (window.location.pathname == '/' && document.referrer=="") {
+    //    window.location.href = '/Landing/Index';
+
+    //    // Index (home) page
+
+    //}
+
+
+
+</script>
+<div class="page home-page">
+    <div class="page-body">
+        @Html.Widget("home_page_top")
+        @*@Html.Action("TopicBlock", "Topic", new { systemName = "HomePageText" })*@
+        @Html.Widget("home_page_before_categories")
+        @Html.Action("HomepageCategories", "Catalog")
+
+
+
+        <div class="homepage-middle-wrapper">
+            <div class="container clearfix pt-2">
+                @Html.Action("HomepageEventBanner", "Home")
+            </div>
+
+            <div class="container clearfix pt-2" id="divBanner1">
+                @Html.Widget("home_page_before_products")
+
+            </div>
+
+            <div class="container clearfix pt-2">
+                @Html.Widget("home_page_before_news")
+
+            </div>
+
+            <div class="container clearfix pt-2 ">
+                @Html.Widget("home_page_before_best_sellers")
+
+            </div>
+
+            @*@Html.Action("HomepageBestSellers", "Product")*@
+            @Html.Widget("pavilion_home_page_richblog")
+        </div>
+
+
+        @Html.Action("HomePageNews", "News")
+        @Html.Widget("home_page_before_poll")
+        @Html.Action("HomePagePolls", "Poll")
+
+        <div class="homepage-bottom-wrapper">
+            @Html.Widget("home_page_bottom")
+        </div>
+
+        <div class="container clearfix">
+            <h3 class="light-title center">What Our Customers Say about iGudang</h3>
+            <div id="oc-testi" class="owl-carousel testimonials-carousel carousel-widget" data-margin="20" data-items-xs="1" data-items-sm="2" data-items-md="3" data-items-lg="4" data-nav="false">
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/1.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Thank you iGudang for making my shopping at ease. Got both my Casio watch and camera within 3 days. Love the packaging too!</p>
+                            <div class="testi-meta">
+                                Elaine
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/2.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Finally found a G-Shock watch at the lowest price. Fast delivery too. Thank you iGudang.</p>
+                            <div class="testi-meta">
+                                Zaily
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/3.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Three words – Convenient, reliable and cheap! I received my watch in one piece. Two thumbs up for iGudang! Keep up the good work!</p>
+                            <div class="testi-meta">
+                                Lily
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+            </div>
+        </div>
+
+        <br /><br /><br />
+    </div>
+</div>

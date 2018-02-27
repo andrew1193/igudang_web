@@ -1,0 +1,546 @@
+﻿@model Nop.Plugin.Widgets.PopupMaker.Models.PublicInfoModel
+@{
+    Layout = "";
+
+    Html.AddScriptParts("~/Plugins/Widgets.PopupMaker/Scripts/jquery.bpopup.min.js");
+    Html.AddScriptParts("~/Plugins/Widgets.PopupMaker/Scripts/jquery.easing.1.3.js");
+    Html.AddCssFileParts("~/Plugins/Widgets.PopupMaker/Content/DefaultClean/style.css");
+}
+
+@using Nop.Web.Framework.UI
+
+@if (Model.Popup1Enabled && Model.Popup1Activated)
+{
+    <div id="popup" class="bMulti popup1" style="display: none;">
+        <span class="b-close"></span>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><strong>@Model.Popup1Title</strong></h3>
+            </div>
+            <div class="panel-body">
+                @{ 
+                    var popup1Content = Model.Popup1Content;
+                    if (popup1Content.Contains("[loginform]"))
+                    {
+                        popup1Content = popup1Content.Replace("[loginform]", @Html.Action("PopupLogin", "WidgetsPopupMaker").ToHtmlString());
+                    }
+                }
+                <p>@Html.Raw(popup1Content)</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        @{
+            if (Model.Popup1TriggerType == 0)
+            {
+                <text>
+                $('.popup1').bPopup({
+                    easing: 'easeOutBack', //uses jQuery easing plugin
+                    speed: 450,
+                    opacity: '0.5',
+                    transition: 'slideDown'
+                });
+                </text>
+            }
+            else if (Model.Popup1TriggerType == 1)
+            {
+                <text>
+                setTimeout(function () {
+                    $('.popup1').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                }, @Model.Popup1DelaySeconds);
+                </text>
+            }
+            else if (Model.Popup1TriggerType == 2)
+            {
+                <text>
+
+                var shown = false;
+                $(document).scroll(function(){
+                    var y = $(document).scrollTop();
+                    if (y > @Model.Popup1DelayScroll && !shown) {
+                        $('.popup1').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        }).fadeIn();
+                        shown = true;
+                    }
+                    console.log(y);
+                });
+
+                </text>
+            }
+            else if (Model.Popup1TriggerType == 3)
+            {
+                <text>
+                $('@Model.Popup1Clicked').click(function (e) {
+                    e.preventDefault();
+                    $('.popup1').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                });
+                </text>
+            }
+            else if (Model.Popup1TriggerType == 4)
+            {
+                <text>
+                var shown = false;
+                document.addEventListener("mouseleave", function (e) {
+                    if (e.clientY < 0 && !shown) {
+                        $('.popup1').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        });
+                        shown = true;
+                    }
+                }, false);
+                </text>
+            }
+        }
+    });
+    </script>
+}
+
+@if (Model.Popup2Enabled && Model.Popup2Activated)
+{
+    <div id="popup" class="bMulti popup2" style="display: none;">
+        <span class="b-close"></span>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><strong>@Model.Popup2Title</strong></h3>
+            </div>
+            <div class="panel-body">
+                @{
+                    var popup2Content = Model.Popup2Content;
+                    if (popup2Content.Contains("[loginform]"))
+                    {
+                        popup2Content = popup2Content.Replace("[loginform]", @Html.Action("PopupLogin", "WidgetsPopupMaker").ToHtmlString());
+                    }
+                }
+                <p>@Html.Raw(popup2Content)</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        @{
+            if (Model.Popup2TriggerType == 0)
+            {
+                <text>
+                $('.popup2').bPopup({
+                    easing: 'easeOutBack', //uses jQuery easing plugin
+                    speed: 450,
+                    opacity: '0.5',
+                    transition: 'slideDown'
+                });
+                </text>
+            }
+            else if (Model.Popup2TriggerType == 1)
+            {
+                <text>
+                setTimeout(function () {
+                    $('.popup2').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                }, @Model.Popup2DelaySeconds);
+                </text>
+            }
+            else if (Model.Popup2TriggerType == 2)
+            {
+                <text>
+
+                var shown = false;
+                $(document).scroll(function(){
+                    var y = $(document).scrollTop();
+                    if (y > @Model.Popup2DelayScroll && !shown) {
+                        $('.popup2').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        }).fadeIn();
+                        shown = true;
+                    }
+                    console.log(y);
+                });
+
+                </text>
+             }
+            else if (Model.Popup2TriggerType == 3)
+            {
+                <text>
+                $('@Model.Popup2Clicked').click(function (e) {
+                    e.preventDefault();
+                    $('.popup2').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                });
+                </text>
+            }
+            else if (Model.Popup2TriggerType == 4)
+            {
+                <text>
+                var shown = false;
+                document.addEventListener("mouseleave", function (e) {
+                    if (e.clientY < 0 && !shown) {
+                        $('.popup2').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        });
+                        shown = true;
+                    }
+                }, false);
+                </text>
+            }
+        }
+
+
+
+    });
+    </script>
+}
+
+@if (Model.Popup3Enabled && Model.Popup3Activated)
+{
+    <div id="popup" class="bMulti popup3" style="display: none;">
+        <span class="b-close"></span>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><strong>@Model.Popup3Title</strong></h3>
+            </div>
+            <div class="panel-body">
+                @{
+                    var popup3Content = Model.Popup3Content;
+                    if (popup3Content.Contains("[loginform]"))
+                    {
+                        popup3Content = popup3Content.Replace("[loginform]", @Html.Action("PopupLogin", "WidgetsPopupMaker").ToHtmlString());
+                    }
+                }
+                <p>@Html.Raw(popup3Content)</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        @{
+            if (Model.Popup3TriggerType == 0)
+            {
+                <text>
+                $('.popup3').bPopup({
+                    easing: 'easeOutBack', //uses jQuery easing plugin
+                    speed: 450,
+                    opacity: '0.5',
+                    transition: 'slideDown'
+                });
+                </text>
+            }
+            else if (Model.Popup3TriggerType == 1)
+            {
+                <text>
+                setTimeout(function () {
+                    $('.popup3').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                }, @Model.Popup3DelaySeconds);
+                </text>
+            }
+            else if (Model.Popup3TriggerType == 2)
+            {
+                <text>
+
+                var shown = false;
+                $(document).scroll(function(){
+                    var y = $(document).scrollTop();
+                    if (y > @Model.Popup3DelayScroll && !shown) {
+                        $('.popup3').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        }).fadeIn();
+                        shown = true;
+                    }
+                    console.log(y);
+                });
+
+                </text>
+             }
+            else if (Model.Popup3TriggerType == 3)
+            {
+                <text>
+                $('@Model.Popup3Clicked').click(function (e) {
+                    e.preventDefault();
+                    $('.popup3').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                });
+                </text>
+            }
+            else if (Model.Popup3TriggerType == 4)
+            {
+                <text>
+                var shown = false;
+                document.addEventListener("mouseleave", function (e) {
+                    if (e.clientY < 0 && !shown) {
+                        $('.popup3').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        });
+                        shown = true;
+                    }
+                }, false);
+                </text>
+            }
+        }
+
+
+
+    });
+    </script>
+}
+
+@if (Model.Popup4Enabled && Model.Popup4Activated)
+{
+    <div id="popup" class="bMulti popup4" style="display: none;">
+        <span class="b-close"></span>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><strong>@Model.Popup4Title</strong></h3>
+            </div>
+            <div class="panel-body">
+                @{
+                    var popup4Content = Model.Popup4Content;
+                    if (popup4Content.Contains("[loginform]"))
+                    {
+                        popup4Content = popup4Content.Replace("[loginform]", @Html.Action("PopupLogin", "WidgetsPopupMaker").ToHtmlString());
+                    }
+                }
+                <p>@Html.Raw(popup4Content)</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        @{
+            if (Model.Popup4TriggerType == 0)
+            {
+                <text>
+                $('.popup4').bPopup({
+                    easing: 'easeOutBack', //uses jQuery easing plugin
+                    speed: 450,
+                    opacity: '0.5',
+                    transition: 'slideDown'
+                });
+                </text>
+            }
+            else if (Model.Popup4TriggerType == 1)
+            {
+                <text>
+                setTimeout(function () {
+                    $('.popup4').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                }, @Model.Popup4DelaySeconds);
+                </text>
+            }
+            else if (Model.Popup4TriggerType == 2)
+            {
+                <text>
+
+                var shown = false;
+                $(document).scroll(function(){
+                    var y = $(document).scrollTop();
+                    if (y > @Model.Popup4DelayScroll && !shown) {
+                        $('.popup4').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        }).fadeIn();
+                        shown = true;
+                    }
+                    console.log(y);
+                });
+
+                </text>
+             }
+            else if (Model.Popup4TriggerType == 3)
+            {
+                <text>
+                $('@Model.Popup4Clicked').click(function (e) {
+                    e.preventDefault();
+                    $('.popup4').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                });
+                </text>
+            }
+            else if (Model.Popup4TriggerType == 4)
+            {
+                <text>
+                var shown = false;
+                document.addEventListener("mouseleave", function (e) {
+                    if (e.clientY < 0 && !shown) {
+                        $('.popup4').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        });
+                        shown = true;
+                    }
+                }, false);
+                </text>
+            }
+        }
+
+
+
+    });
+    </script>
+}
+
+@if (Model.Popup5Enabled && Model.Popup5Activated)
+{
+    <div id="popup" class="bMulti popup5" style="display: none;">
+        <span class="b-close"></span>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><strong>@Model.Popup4Title</strong></h3>
+            </div>
+            <div class="panel-body">
+                @{
+                    var popup5Content = Model.Popup5Content;
+                    if (popup5Content.Contains("[loginform]"))
+                    {
+                        popup5Content = popup5Content.Replace("[loginform]", @Html.Action("PopupLogin", "WidgetsPopupMaker").ToHtmlString());
+                    }
+                }
+                <p>@Html.Raw(popup5Content)</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        @{
+            if (Model.Popup5TriggerType == 0)
+            {
+                <text>
+                $('.popup5').bPopup({
+                    easing: 'easeOutBack', //uses jQuery easing plugin
+                    speed: 450,
+                    opacity: '0.5',
+                    transition: 'slideDown'
+                });
+                </text>
+            }
+            else if (Model.Popup5TriggerType == 1)
+            {
+                <text>
+                setTimeout(function () {
+                    $('.popup5').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                }, @Model.Popup5DelaySeconds);
+                </text>
+            }
+            else if (Model.Popup5TriggerType == 2)
+            {
+                <text>
+
+                var shown = false;
+                $(document).scroll(function(){
+                    var y = $(document).scrollTop();
+                    if (y > @Model.Popup5DelayScroll && !shown) {
+                        $('.popup5').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            transition: 'slideDown'
+                        }).fadeIn();
+                        shown = true;
+                    }
+                    console.log(y);
+                });
+
+                </text>
+             }
+            else if (Model.Popup5TriggerType == 3)
+            {
+                <text>
+                $('@Model.Popup5Clicked').click(function (e) {
+                    e.preventDefault();
+                    $('.popup5').bPopup({
+                        easing: 'easeOutBack', //uses jQuery easing plugin
+                        speed: 450,
+                        opacity: '0.5',
+                        transition: 'slideDown'
+                    });
+                });
+                </text>
+            }
+            else if (Model.Popup5TriggerType == 4)
+            {
+                <text>
+                var shown = false;
+                document.addEventListener("mouseleave", function (e) {
+                    if (e.clientY < 0 && !shown) {
+                        $('.popup5').bPopup({
+                            easing: 'easeOutBack', //uses jQuery easing plugin
+                            speed: 450,
+                            opacity: '0.5',
+                            transition: 'slideDown'
+                        });
+                        shown = true;
+                    }
+                }, false);
+                </text>
+            }
+        }
+
+
+
+    });
+    </script>
+}

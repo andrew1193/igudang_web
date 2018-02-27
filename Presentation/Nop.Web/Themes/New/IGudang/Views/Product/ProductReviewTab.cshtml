@@ -1,0 +1,48 @@
+﻿@model ProductReviewsModel
+@using Nop.Web.Models.Catalog;
+
+<ol class="commentlist clearfix">
+    @if (Model.Items.Count > 0)
+    {
+        foreach (var review in Model.Items)
+        {
+            int ratingPercent = review.Rating * 20;
+            <li class="comment even thread-even depth-1" id="li-comment-1">
+                <div id="comment-1" class="comment-wrap clearfix">
+                    <div class="comment-meta">
+                        <div class="comment-author vcard">
+                            <span class="comment-avatar clearfix">
+                                <img alt='' src='http://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=60' height='60' width='60' />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="comment-content clearfix">
+                        <div class="comment-author">
+                            @if (review.AllowViewingProfiles)
+                            {
+                                <a href="@Url.RouteUrl("CustomerProfile", new { id = review.CustomerId })">@(review.CustomerName)</a>
+                            }
+                            else
+                            {
+                                @review.CustomerName
+                            }
+                            <span><a href="#" title="Permalink to this comment">@review.WrittenOnStr</a></span>
+                        </div>
+                        <p>@Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(review.ReviewText, false, true, false, false, false, false))</p>
+                        <div class="review-comment-ratings">
+                            <div class="review-item-head">
+                                <div class="product-review-box">
+                                    <div class="rating">
+                                        <div style="width: @(ratingPercent)%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+        }
+    }
+</ol>

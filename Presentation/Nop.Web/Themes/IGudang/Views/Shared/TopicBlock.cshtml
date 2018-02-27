@@ -1,0 +1,13 @@
+﻿@using Nop.Web.Models.Topics
+@model TopicModel
+
+@if (Model != null)
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>@Model.Title</h4>
+    </div>
+    <div class="modal-body">
+        @Html.Raw(Model.Body)
+    </div>
+}

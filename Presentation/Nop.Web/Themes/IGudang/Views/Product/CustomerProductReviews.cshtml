@@ -1,0 +1,222 @@
+﻿@model CustomerProductReviewsModel
+@using Nop.Web.Models.Catalog
+@using Nop.Web.Models.Customer;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.CustomerProductReviews").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-my-product-reviews-list-page");
+}
+
+<div class="content-wrap pt-2">
+    <div class="container clearfix">
+        <div class="container clearfix">
+            <!-- Post Content
+            ============================================= -->
+            <div class="postcontent nobottommargin col_last clearfix">
+                <div class="page-title">
+                    <h1>@T("Account.MyAccount") - @T("Account.CustomerProductReviews")</h1>
+                </div>
+
+                <div class="profile-container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @if (Model.ProductReviews.Count > 0)
+                            {
+                                foreach (var review in Model.ProductReviews)
+                                {
+                                    @GetReviewRow(review)
+                                }
+                                var pager = Html.Pager(Model.PagerModel);
+                                if (!MvcHtmlString.IsNullOrEmpty(pager))
+                                {
+                                    <div class="pager">
+                                        @pager
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="no-data">
+                                    @T("Account.CustomerProductReviews.NoRecords")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.ProductReviews })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@*@section left
+    {
+        @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.ProductReviews })
+    }
+
+    <div class="page account-page my-product-reviews-list-page">
+        <div class="page-title">
+            <h1>@T("Account.MyAccount") - @T("Account.CustomerProductReviews")</h1>
+        </div>
+        <div class="page-body">
+            @if (Model.ProductReviews.Count > 0)
+            {
+                foreach (var review in Model.ProductReviews)
+                {
+                    @GetReviewRow(review)
+                }
+                var pager = Html.Pager(Model.PagerModel);
+                if (!MvcHtmlString.IsNullOrEmpty(pager))
+                {
+                    <div class="pager">
+                        @pager
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-data">
+                    @T("Account.CustomerProductReviews.NoRecords")
+                </div>
+            }
+        </div>
+    </div>*@
+
+@helper GetReviewRow(CustomerProductReviewModel review)
+{
+int ratingPercent = review.Rating * 20;
+
+
+    <div class="profile-item">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" style="clear: both">
+                <tbody>
+                    <tr>
+                        <th width="35%">Title: </th>
+                        <td width="65%"><strong>@review.Title</strong>@(!string.IsNullOrEmpty(review.ApprovalStatus) ? string.Format(" - {0}", review.ApprovalStatus) : null)</td>
+                    </tr>
+                    <tr>
+                        <th>Rate: </th>
+                        <td>
+                            @*<div style="width: @(ratingPercent)%">
+                                </div>*@
+                            <div class="product-rating igudang-product-rate fleft">
+                                @if (review.Rating == 1)
+                                {
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star-empty"></i>
+                                    <i class="icon-star-empty"></i>
+                                    <i class="icon-star-empty"></i>
+                                    <i class="icon-star-empty"></i>
+                                }
+                                else if (review.Rating == 2)
+                                {
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star-empty"></i>
+                                    <i class="icon-star-empty"></i>
+                                    <i class="icon-star-empty"></i>
+                                }
+                                else if (review.Rating == 3)
+                                {
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star-empty"></i>
+                                    <i class="icon-star-empty"></i>
+                                }
+                                else if (review.Rating == 4)
+                                {
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star-empty"></i>
+                                }
+                                else if (review.Rating == 5)
+                                {
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                    <i class="icon-star3 rated"></i>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Content: </th>
+                        <td>@Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(review.ReviewText, false, true, false, false, false, false))</td>
+                    </tr>
+                    <tr>
+                        <th>@T("Account.CustomerProductReviews.ProductReviewFor"): </th>
+                        <td><a href="@Url.RouteUrl("Product", new {SeName = review.ProductSeName})">@review.ProductName</a></td>
+                    </tr>
+                    <tr>
+                        <td>Date: </td>
+                        <td>@review.WrittenOnStr</td>
+                    </tr>
+                    @if (!String.IsNullOrEmpty(review.ReplyText))
+                    {
+                        <tr>
+                            <th>@T("Reviews.Reply")</th>
+                            <td>@Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(review.ReplyText, false, true, false, false, false, false))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @*<div class="product-review-item">
+            <div class="review-item-head">
+                <div class="review-title">
+                    <strong>@review.Title</strong>@(!string.IsNullOrEmpty(review.ApprovalStatus) ? string.Format(" - {0}", review.ApprovalStatus) : null)
+                </div>
+                <div class="product-review-box">
+                    <div class="rating">
+                        <div style="width: @(ratingPercent)%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="review-content">
+                <div class="review-text">
+                    @Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(review.ReviewText, false, true, false, false, false, false))
+                </div>
+                <div class="review-info">
+                    <span class="user">
+                        <label>@T("Account.CustomerProductReviews.ProductReviewFor"):</label>
+                        <a href="@Url.RouteUrl("Product", new {SeName = review.ProductSeName})">@review.ProductName</a>
+
+                    </span>
+                    <span class="separator">|</span>
+                    <span class="date">
+                        <label>@T("Reviews.Date"):</label>
+                        <span>@review.WrittenOnStr</span>
+                    </span>
+                </div>
+                @if (!String.IsNullOrEmpty(review.ReplyText))
+                {
+                    <div class="reply">
+                        <div class="reply-header">
+                            @T("Reviews.Reply")
+                        </div>
+                        <div class="reply-text">
+                            @Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(review.ReplyText, false, true, false, false, false, false))
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>*@
+}

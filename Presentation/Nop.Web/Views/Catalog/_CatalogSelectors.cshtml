@@ -1,0 +1,101 @@
+﻿@model CatalogPagingFilteringModel
+@using Nop.Web.Models.Catalog;
+
+
+
+<!-- Filter
+============================================= -->
+<nav class="navbar navbar-default" role="navigation" style="background-color:transparent;border-color:transparent">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand visible-md visible-xs" href="#">Filter</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav nobottommargin">
+               
+                <li class="dropdown">
+
+                    <table>
+                        <tr>
+                            <td><span style="padding:10px">@T("Catalog.OrderBy")</span></td>
+                            <td >@Html.DropDownList("products-orderby", Model.AvailableSortOptions, new { onchange = "setLocation(this.value);", @class = "form-control" })
+</td>
+                        </tr>
+                    </table>
+
+
+                  
+                    
+
+
+
+                </li>
+                
+            </ul>
+            <div class="pull-right">
+              
+                @if (Model.AllowCustomersToSelectPageSize)
+                {
+
+                    <table>
+                        <tr>
+                            <td><span style="padding:10px">@T("Catalog.PageSize")</span></td>
+                            <td>
+                                @Html.DropDownList("products-pagesize", Model.PageSizeOptions, new { onchange = "setLocation(this.value);", @class = "form-control" })
+                        </td>
+                    </tr>
+                </table>
+
+
+
+
+
+                   
+                           
+                            @*<span>@T("Catalog.PageSize.PerPage")</span>*@
+                }
+            </div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<!-- Filter end -->
+@*view mode*@
+@*@if (Model.AllowProductViewModeChanging)
+    {
+        <div class="product-viewmode">
+            <span>@T("Catalog.ViewMode")</span>
+            @if (Model.AvailableViewModes.Count > 1)
+            {
+                var gridMode = Model.AvailableViewModes[0];
+                var listMode = Model.AvailableViewModes[1];
+
+                <a class="viewmode-icon grid @if(gridMode.Selected){<text>selected</text>}" href="@gridMode.Value" title="@gridMode.Text">@gridMode.Text</a>
+                <a class="viewmode-icon list @if (listMode.Selected){<text>selected</text>}" href="@listMode.Value" title="@listMode.Text">@listMode.Text</a>
+            }
+        </div>
+    }*@
+@*sorting*@
+@*@if (Model.AllowProductSorting)
+    {
+        <div class="product-sorting">
+            <span>@T("Catalog.OrderBy")</span>
+            @Html.DropDownList("products-orderby", Model.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+        </div>
+    }*@
+@*page size*@
+@*@if (Model.AllowCustomersToSelectPageSize)
+    {
+        <div class="product-page-size">
+            <span>@T("Catalog.PageSize")</span>
+            @Html.DropDownList("products-pagesize", Model.PageSizeOptions, new { onchange = "setLocation(this.value);" })
+            <span>@T("Catalog.PageSize.PerPage")</span>
+        </div>
+    }*@

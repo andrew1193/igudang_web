@@ -1,0 +1,52 @@
+﻿@model CustomerPhotoBoothModel
+@using Nop.Web.Models.Customer;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-account-page");
+    Html.AppendPageCssClassParts("html-avatar-page");
+}
+@section left
+{
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.PhotoBooth })
+}
+@using (Html.BeginRouteForm("CustomerPhotoBooth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="page account-page avatar-page">
+        <div class="page-title">
+            <h1>@T("Account.MyAccount") - @T("Account.PhotoBooth")</h1>
+        </div>
+        <div class="page-body">
+            @{
+                var validationSummary = Html.ValidationSummary(true);
+            }
+            @if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+            {
+                <div class="message-error">@validationSummary</div>
+            }
+            <div class="fieldset">
+                @if (!String.IsNullOrEmpty(Model.PhotoUrl))
+                {
+                    <div class="image">
+                        <img src="@(Model.PhotoUrl)" alt="avatar" />
+                    </div>
+                }
+                <input name="uploadedFile" type="file" />
+                <div class="info">
+                    @T("Account.PhotoBooth.UploadRules")
+                </div>
+            </div>
+            <div class="buttons">
+                <input type="submit" name="upload-photobooth" class="button-1 upload-avatar-button" value="@T("Common.Upload")" />
+                @if (!String.IsNullOrEmpty(Model.PhotoUrl))
+                {
+                    <input type="submit" name="remove-photobooth" class="button-2 remove-avatar-button" value="@T("Account.PhotoBooth.RemovePhotoBooth")" />
+                }
+            </div>
+        </div>
+    </div>
+}

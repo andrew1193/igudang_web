@@ -1,0 +1,2 @@
+DataProvider: sqlserver
+DataConnectionString: Data Source=220.158.200.68;Initial Catalog=igudang_uat;Integrated Security=False;Persist Security Info=False;User ID=igudang_admin_888;Password=MUcHut3u

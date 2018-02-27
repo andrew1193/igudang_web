@@ -1,0 +1,29 @@
+﻿@model ShoppingCartModel
+@using Nop.Web.Models.Checkout
+@using Nop.Web.Models.ShoppingCart;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ShoppingCart").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-shopping-cart-page");
+}
+@if (!Model.OnePageCheckoutEnabled)
+{
+    @Html.Action("CheckoutProgress", "Checkout", new {step = CheckoutProgressStep.Cart})
+}
+
+    <div class="content-wrap pt-2">
+        @Html.Partial("OrderSummary", Model)
+    </div>
+
+
+<script>
+
+    $("#checkall").click(function () {
+        $("input[name='removefromcart']").not(this).prop('checked', this.checked);
+    });
+
+
+</script>

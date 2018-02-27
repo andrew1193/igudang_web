@@ -1,0 +1,127 @@
+﻿@model ProductReviewOverviewModel
+@using System.Globalization
+@using Nop.Web.Models.Catalog;
+@{
+    int ratingPercent = 0;
+    if (Model.TotalReviews != 0)
+    {
+        ratingPercent = ((Model.RatingSum * 100) / Model.TotalReviews) / 5;
+    }
+}
+
+
+
+@if (Model.AllowCustomerReviews)
+{
+    <ul class="list-inline nobottommargin fleft">
+        @if (Model.TotalReviews > 0)
+        {
+            <li>
+                <div class="product-rating igudang-product-rate">
+                    @if (ratingPercent <= 0)
+                    {
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent > 0 && ratingPercent < 20)
+                    {
+                        <i class="icon-star-half-full rated"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent == 20)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent > 20 && ratingPercent < 40)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-half-full rated"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent == 40)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent > 40 && ratingPercent < 60)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-half-full rated"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent == 60)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-empty"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent > 60 && ratingPercent < 80)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-half-full rated"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent == 80)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-empty"></i>
+                    }
+                    else if (ratingPercent > 80 && ratingPercent < 100)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star-half-full rated"></i>
+                    }
+                    else if (ratingPercent == 100)
+                    {
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                        <i class="icon-star3 rated"></i>
+                    }
+
+                </div>
+            </li>
+            <li>(@Model.TotalReviews)</li>
+            @*<li> | </li>
+            <li class="write-review-top"><a href="@Url.RouteUrl("ProductReviews", new { productId = Model.ProductId })">@T("Reviews.Overview.AddNew")</a></li>*@
+        }
+        @*else
+        {
+            <li class="write-review-top"><a href="@Url.RouteUrl("ProductReviews", new { productId = Model.ProductId })">@T("Reviews.Overview.First")</a></li>
+        }*@
+    </ul>
+}
+
+
+
+
+
+

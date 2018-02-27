@@ -1,0 +1,138 @@
+﻿@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Services.Configuration
+@using Nop.Web.Models.Common
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Common;
+@using Nop.Web.Framework.Themes
+@using Nop.Web.Framework.UI
+
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AppendCssFileParts("~/Themes/Pavilion/Content/css/owl.carousel.css");
+    Html.AddScriptParts("~/Themes/Pavilion/Content/scripts/owl.carousel.min.js");
+
+    //page class
+    Html.AppendPageCssClassParts("html-home-page");
+    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
+    var themeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    var storeId = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.Id;
+    var settingService = EngineContext.Current.Resolve<ISettingService>();
+    var removeCopyright = settingService.GetSettingByKey("pavilionthemesettings.removecopyright", false, storeId, true);
+    var removeDesignedBy = settingService.GetSettingByKey("pavilionthemesettings.removedesignedby", false, storeId, true);
+}
+
+
+<div class="page home-page">
+    <div class="page-body">
+        @Html.Widget("home_page_top")
+        @Html.Action("TopicBlock", "Topic", new { systemName = "HomePageText" })
+        @Html.Widget("home_page_before_categories")
+        @Html.Action("HomepageCategories", "Catalog")
+      
+      
+
+        <div class="homepage-middle-wrapper">
+            <div class="container clearfix pt-2 ">
+                @Html.Widget("home_page_before_products")
+
+            </div>
+
+
+            <div class="container clearfix pt-2 ">
+                @Html.Widget("home_page_before_best_sellers")
+
+                </div>
+
+                @Html.Action("HomepageBestSellers", "Product")
+                @Html.Widget("pavilion_home_page_richblog")
+            </div>
+
+        @Html.Widget("home_page_before_news")
+        @Html.Action("HomePageNews", "News")
+        @Html.Widget("home_page_before_poll")
+        @Html.Action("HomePagePolls", "Poll")
+
+        <div class="homepage-bottom-wrapper">
+            @Html.Widget("home_page_bottom")
+        </div>
+
+        <div class="container clearfix">
+            <h3 class="light-title center">What Our Customer Say bout iGudang</h3>
+            <div id="oc-testi" class="owl-carousel testimonials-carousel carousel-widget" data-margin="20" data-items-xs="1" data-items-sm="2" data-items-md="3" data-items-lg="4">
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/1.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Incidunt deleniti blanditiis quas aperiam recusandae consequatur ullam quibusdam cum libero illo rerum repellendus!</p>
+                            <div class="testi-meta">
+                                Amber Heard
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/2.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Natus voluptatum enim quod necessitatibus quis expedita harum provident eos obcaecati id culpa corporis molestias.</p>
+                            <div class="testi-meta">
+                                Gal Gadot
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/3.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Fugit officia dolor sed harum excepturi ex iusto magnam asperiores molestiae qui natus obcaecati facere sint amet.</p>
+                            <div class="testi-meta">
+                                Emma Dumont
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/4.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Similique fugit repellendus expedita excepturi iure perferendis provident quia eaque. Repellendus, vero numquam?</p>
+                            <div class="testi-meta">
+                                Olivia Munn
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="testimonial igudang-testimonial">
+                        <div class="testi-image">
+                            <a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/testimonials/5.jpg", themeName))" alt="Customer Testimonails"></a>
+                        </div>
+                        <div class="testi-content">
+                            <p>Incidunt deleniti blanditiis quas aperiam recusandae consequatur ullam quibusdam cum libero illo rerum repellendus!</p>
+                            <div class="testi-meta">
+                                Amber Heard
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+
+        <br/><br /><br />
+    </div>
+</div>

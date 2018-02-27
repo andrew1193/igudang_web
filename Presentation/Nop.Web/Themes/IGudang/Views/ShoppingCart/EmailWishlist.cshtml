@@ -1,0 +1,83 @@
+﻿@model WishlistEmailAFriendModel
+@using Nop.Web.Models.ShoppingCart;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.WishlistEmailAFriend").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-email-a-friend-page");
+}
+<div class="content-wrap pt-2">
+
+    <div class="container clearfix">
+        <div class="accordion accordion-lg divcenter nobottommargin clearfix" style="max-width: 550px;">
+            <div class="acctitle"><i class="acc-closed icon-lock3"></i><i class="acc-open icon-email"></i>@T("Wishlist.EmailAFriend.Title")</div>
+            <div class="acc_content clearfix">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col_full">
+                        @Html.LabelFor(model => model.FriendEmail)@Html.RequiredHint()
+                        @Html.TextBoxFor(model => model.FriendEmail, new { @class = "form-control", @value = "", name = "register-form-name", @type = "text" })
+                        @*<input type="text" asp-for="FriendEmail" name="register-form-name" value="" class="form-control" />*@
+                        @Html.ValidationMessageFor(model => model.FriendEmail)
+                    </div>
+                    <div class="col_full">
+                        @Html.LabelFor(model => model.YourEmailAddress)@Html.RequiredHint()
+                        @Html.TextBoxFor(model => model.YourEmailAddress, new { @class = "form-control", @value = "", name = "register-form-name", @type = "text" })
+                        @*<input type="text" asp-for="YourEmailAddress" name="register-form-name" value="" class="form-control" />*@
+
+                        @Html.ValidationMessageFor(model => model.YourEmailAddress)
+                    </div>
+                    <div class="col_full nobottommargin">
+                        @Html.LabelFor(model => model.PersonalMessage)
+
+                        @Html.TextAreaFor(model => model.PersonalMessage, new { @class = "form-control", @value = "", @name = "register-form-name" })
+                        @*<textarea asp-for="PersonalMessage" name="register-form-name" value="" class="form-control"></textarea>*@
+
+                        @Html.ValidationMessageFor(model => model.PersonalMessage)
+
+
+                    </div>
+
+                    if (Model.DisplayCaptcha)
+                    {
+                        <div class="col_full">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                    }
+
+
+
+
+                    <div class="line line-sm"></div>
+                    <div class="center">
+
+                        <button class="button button-3d button-black nomargin" id="login-form-submit" type="submit" name="send-email">@T("Wishlist.EmailAFriend.Button")</button>
+
+
+
+                    </div>
+                }
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    .required {
+        color: red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+</style>

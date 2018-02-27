@@ -1,0 +1,42 @@
+﻿@using SevenSpikes.Nop.Plugins.SmartProductCollections.Models.Public
+
+@model CategoryGroupModel
+
+@{
+    Layout = "";
+}
+
+
+
+	<div class="container clearfix pt-4 pb-4">
+					<div class="row">
+						<div class="col-md-12 home-hp-section">
+							<div class="row nomargin">
+								<div class="col-md-8 nopadding">
+									<div class="row product-row">
+									
+									@foreach (var tab in Model.Tabs)
+									{
+										
+											@Html.Partial("_Grid2", tab.Products)
+										
+									}
+		
+		
+									</div>
+								</div>
+								<div class="col-md-4 nopadding home-hot-section">
+									<div class="hot-title">
+										<h2>Sport Shoes Warehouse Stock</h2>
+									</div>
+									<div class="hot-des">
+										<span>Stock Available</span>
+										<span class="hot-date">12 Nov - 17 Nov 2017</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				

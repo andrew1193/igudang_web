@@ -1,0 +1,1192 @@
+﻿@model Nop.Plugin.Widgets.PopupMaker.Models.ConfigurationModel
+@using Nop.Web.Framework;
+@using Nop.Web.Framework.Events;
+@using Nop.Core.Infrastructure;
+@using Nop.Services.Events;
+@using Nop.Plugin.Widgets.PopupMaker.Models;
+@using Nop.Web.Framework.Localization;
+
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{ 
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#@Html.FieldIdFor(m => m.Popup1LimitType)').change(function () {
+				var value = $(this).val();
+
+				$('.popup1-limit-type').hide();
+				if (value == '1' || value == '2' || value == '3')
+					$('.popup1-limit-type').show();
+			});
+		});
+	</script>
+
+	@Html.AntiForgeryToken()
+
+	<script>
+	$(document).ready(function () {
+		bindBootstrapTabSelectEvent('popup-edit');
+	});
+	</script>
+
+	<div class="content">
+	<div class="form-horizontal">
+		<div id="popup-edit" class="nav-tabs-custom">
+			<ul class="nav nav-tabs">
+				@Html.RenderBootstrapTabHeader("tab-popup1", @T("Plugins.Widgets.Popup.Popup1"), true)
+				@Html.RenderBootstrapTabHeader("tab-popup2", @T("Plugins.Widgets.Popup.Popup2"))
+				@Html.RenderBootstrapTabHeader("tab-popup3", @T("Plugins.Widgets.Popup.Popup3"))
+				@Html.RenderBootstrapTabHeader("tab-popup4", @T("Plugins.Widgets.Popup.Popup4"))
+				@Html.RenderBootstrapTabHeader("tab-popup5", @T("Plugins.Widgets.Popup.Popup5"))
+                @Html.RenderBootstrapTabHeader("tab-configure", @T("Plugins.Widgets.Popup.Configure"))
+			</ul>
+			<div class="tab-content">
+				@Html.RenderBootstrapTabContent("tab-popup1", @TabPopup1(), true)
+				@Html.RenderBootstrapTabContent("tab-popup2", @TabPopup2())
+				@Html.RenderBootstrapTabContent("tab-popup3", @TabPopup3())
+				@Html.RenderBootstrapTabContent("tab-popup4", @TabPopup4())
+				@Html.RenderBootstrapTabContent("tab-popup5", @TabPopup5())
+                @Html.RenderBootstrapTabContent("tab-configure", @TabConfigure())
+			</div>
+		</div>
+	</div>
+	</div>
+		
+
+		 //custom tabs
+		 var eventMessage = new AdminTabStripCreated(this.Html, "popup-edit");
+		 EngineContext.Current.Resolve<IEventPublisher>().Publish(eventMessage);
+		 foreach (var eventBlock in eventMessage.BlocksToRender)
+		 {
+			@eventBlock
+		 }
+	
+
+
+	@*save selected tab name*@
+	<input type="hidden" id="selected-tab-name" name="selected-tab-name" value="@(Html.GetSelectedTabName())">
+
+	@helper TabPopup1()
+	{
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="col-md-3">
+							@Html.NopLabelFor(model => model.Popup1Enabled)
+						</div>
+						<div class="col-md-9">
+							@Html.NopEditorFor(model => model.Popup1Enabled)
+							@Html.ValidationMessageFor(model => model.Popup1Enabled)
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-3">
+							@Html.NopLabelFor(model => model.Popup1TriggerType)
+						</div>
+						<div class="col-md-9">
+                            <strong>Choose to trigger the popup by (1) delay X seconds, (2) page scrolls X pixels, (3) clicks on elements or (4) mouse leave.</strong><br/>
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+						</div>
+					</div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                           @Html.NopLabelFor(model => model.Popup1ShowOnceOnly)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup1ShowOnceOnly)
+                            @Html.ValidationMessageFor(model => model.Popup1ShowOnceOnly)
+                        </div>
+                    </div>
+                    <div class="form-group popup1-expired-in-days">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup1ShowOnceResetDays)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup1ShowOnceResetDays)
+                            @Html.ValidationMessageFor(model => model.Popup1ShowOnceResetDays)
+                        </div>
+                    </div>
+					<div class="form-group">
+						<div class="col-md-3">
+							@Html.NopLabelFor(model => model.Popup1LimitType)
+						</div>
+						<div class="col-md-9">
+                            <strong>Show the popup on certain pages only. Choose between (1) Fixed Url, (2) Wildcard URL, (3) URL based on RegEx or (4) Home / Product / Category page.</strong><br />
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+						</div>
+					</div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            @Html.NopLabelFor(model => model.Popup1SelectedStoreIds)
+                        </div>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.Popup1SelectedStoreIds, new { SelectList = Model.Popup1AvailableStores })
+                            <script>
+                                $(document).ready(function() {
+
+				                var data = {
+                                    Popup1SelectedStoreIds: $('#@Html.FieldIdFor(model => model.Popup1SelectedStoreIds)').val()
+                          	    };
+                         	      addAntiForgeryToken(data);
+
+                                    var storesIdsInput = $('#@Html.FieldIdFor(model => model.Popup1SelectedStoreIds)').data("kendoMultiSelect");
+                                    storesIdsInput.setOptions({
+                                        autoClose: false
+                                    });
+
+                                    @if (Model.Popup1AvailableStores.Count == 0)
+                            {
+                                <text>
+                                    storesIdsInput.setOptions({
+                                        enable: false,
+                                        placeholder: 'No stores available'
+                                    });
+                                    storesIdsInput._placeholder();
+                                    storesIdsInput._enable();
+                                    </text>
+                            }
+                                });
+                            </script>
+                        </div>
+                    </div>
+					@(Html.LocalizedEditor<ConfigurationModel, ConfigurationModel.ConfigurationLocalizedModel>("popup1-localized",
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup1Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Locales[item].Popup1Title)
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup1Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup1Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Locales[item].Popup1Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup1Content)
+                                     <div>
+                                         <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br/>
+                                         Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                                     </div>
+								 </div>
+							 </div>
+                            @Html.HiddenFor(model => model.Locales[item].LanguageId)
+						</div>
+					,
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup1Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Popup1Title)
+									 @Html.ValidationMessageFor(model => model.Popup1Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup1Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Popup1Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Popup1Content)
+                                     <div>
+                                         <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                         Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                                     </div>
+								 </div>
+							 </div>
+						</div>
+					))
+					
+
+					<div class="form-group">
+						<div class="col-md-3">
+							&nbsp;
+						</div>
+						<div class="col-md-9">
+							<input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+            function togglePopup1ExpiredInDays(val) {
+                if (val) {
+                    $('.popup1-expired-in-days').show();
+                }
+                else {
+                    $('.popup1-expired-in-days').hide();
+                }
+            }
+            togglePopup1ExpiredInDays($('#@Html.FieldIdFor(m => m.Popup1ShowOnceOnly)').prop('checked'));
+            $('#@Html.FieldIdFor(m => m.Popup1ShowOnceOnly)').change(function () {
+                togglePopup1ExpiredInDays($(this).prop('checked'));
+            });
+
+			function togglePopup1TriggerType(val) {
+				if (val == 0) {
+					$('.popup1-delay-seconds').hide();
+					$('.popup1-delay-scroll').hide();
+					$('.popup1-delay-click').hide();
+				}
+				else if (val == 1) {
+					$('.popup1-delay-seconds').show();
+					$('.popup1-delay-scroll').hide();
+					$('.popup1-delay-click').hide();
+				}
+				else if (val == 2) {
+					$('.popup1-delay-seconds').hide();
+					$('.popup1-delay-scroll').show();
+					$('.popup1-delay-click').hide();
+				}
+				else if (val == 3) {
+					$('.popup1-delay-seconds').hide();
+					$('.popup1-delay-scroll').hide();
+					$('.popup1-delay-click').show();
+				}
+				else if (val == 4){
+					$('.popup1-delay-seconds').hide();
+					$('.popup1-delay-scroll').hide();
+					$('.popup1-delay-click').hide();
+				}
+
+			}
+
+			togglePopup1TriggerType($('#@Html.FieldIdFor(m => m.Popup1TriggerType)').val());
+			$('#@Html.FieldIdFor(m => m.Popup1TriggerType)').change(function () {
+				togglePopup1TriggerType($(this).val());
+			});
+
+			function togglePopup1LimitType(value) {
+				if (value == 0) {
+					$('.popup1-limit-type').hide();
+					$('.popup1-choose-page').hide();
+				}
+				else if (value == 1 || value == 2 || value == 3) {
+					$('.popup1-limit-type').show();
+					$('.popup1-choose-page').hide();
+				}
+				else if (value == 4) {
+					$('.popup1-limit-type').hide();
+					$('.popup1-choose-page').show();
+				}
+			}
+
+			togglePopup1LimitType($('#@Html.FieldIdFor(m => m.Popup1LimitType)').val());
+			$('#@Html.FieldIdFor(m => m.Popup1LimitType)').change(function () {
+				togglePopup1LimitType($(this).val());
+			});
+
+		</script>
+	}
+
+	@helper TabPopup2()
+	{
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup2Enabled)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup2Enabled)
+                            @Html.ValidationMessageFor(model => model.Popup2Enabled)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                           @Html.NopLabelFor(model => model.Popup2TriggerType)
+                        </div>
+                        <div class="col-md-9">
+                            <strong>Choose to trigger the popup by (1) delay X seconds, (2) page scrolls X pixels, (3) clicks on elements or (4) mouse leave.</strong><br />
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup2ShowOnceOnly)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup2ShowOnceOnly)
+                            @Html.ValidationMessageFor(model => model.Popup2ShowOnceOnly)
+                        </div>
+                    </div>
+                    <div class="form-group popup2-expired-in-days">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup2ShowOnceResetDays)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup2ShowOnceResetDays)
+                            @Html.ValidationMessageFor(model => model.Popup2ShowOnceResetDays)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup2LimitType)
+                        </div>
+                        <div class="col-md-9">
+                            <strong>Show the popup on certain pages only. Choose between (1) Fixed Url, (2) Wildcard URL, (3) URL based on RegEx or (4) Home / Product / Category page.</strong><br />
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            @Html.NopLabelFor(model => model.Popup2SelectedStoreIds)
+                        </div>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.Popup2SelectedStoreIds, new { SelectList = Model.Popup2AvailableStores })
+                            <script>
+                                $(document).ready(function() {
+
+				                var data = {
+                                    Popup2SelectedStoreIds: $('#@Html.FieldIdFor(model => model.Popup2SelectedStoreIds)').val()
+                          	    };
+                         	      addAntiForgeryToken(data);
+
+                                    var storesIdsInput = $('#@Html.FieldIdFor(model => model.Popup2SelectedStoreIds)').data("kendoMultiSelect");
+                                    storesIdsInput.setOptions({
+                                        autoClose: false
+                                    });
+
+                                    @if (Model.Popup2AvailableStores.Count == 0)
+                            {
+                                <text>
+                                    storesIdsInput.setOptions({
+                                        enable: false,
+                                        placeholder: 'No stores available'
+                                    });
+                                    storesIdsInput._placeholder();
+                                    storesIdsInput._enable();
+                                    </text>
+                            }
+                                });
+                            </script>
+                        </div>
+                    </div>
+					@(Html.LocalizedEditor<ConfigurationModel, ConfigurationModel.ConfigurationLocalizedModel>("popup2-localized",
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup2Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Locales[item].Popup2Title)
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup2Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup2Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Locales[item].Popup2Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup2Content)
+                             <div>
+                                 <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                 Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                             </div>
+								 </div>
+							 </div>
+							 @Html.HiddenFor(model => model.Locales[item].LanguageId)
+						</div>
+					,
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup2Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Popup2Title)
+									 @Html.ValidationMessageFor(model => model.Popup2Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup2Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Popup2Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Popup2Content)
+                             <div>
+                                 <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                 Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                             </div>
+								 </div>
+							 </div>
+						</div>
+					))
+
+					<div class="form-group">
+						<div class="col-md-3">
+							&nbsp;
+						</div>
+						<div class="col-md-9">
+							<input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+            function togglePopup2ExpiredInDays(val) {
+                if (val) {
+                    $('.popup2-expired-in-days').show();
+                }
+                else {
+                    $('.popup2-expired-in-days').hide();
+                }
+            }
+            togglePopup2ExpiredInDays($('#@Html.FieldIdFor(m => m.Popup2ShowOnceOnly)').prop('checked'));
+            $('#@Html.FieldIdFor(m => m.Popup2ShowOnceOnly)').change(function () {
+                togglePopup2ExpiredInDays($(this).prop('checked'));
+            });
+
+			function togglePopup2TriggerType(val) {
+				if (val == 0 || val == 4) {
+					$('.popup2-delay-seconds').hide();
+					$('.popup2-delay-scroll').hide();
+					$('.popup2-delay-click').hide();
+				}
+				else if (val == 1) {
+					$('.popup2-delay-seconds').show();
+					$('.popup2-delay-scroll').hide();
+					$('.popup2-delay-click').hide();
+				}
+				else if (val == 2) {
+					$('.popup2-delay-seconds').hide();
+					$('.popup2-delay-scroll').show();
+					$('.popup2-delay-click').hide();
+				}
+				else if (val == 3) {
+					$('.popup2-delay-seconds').hide();
+					$('.popup2-delay-scroll').hide();
+					$('.popup2-delay-click').show();
+				}
+
+			}
+
+			togglePopup2TriggerType($('#@Html.FieldIdFor(m => m.Popup2TriggerType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup2TriggerType)').change(function () {
+				togglePopup2TriggerType($(this).val());
+			});
+
+			function togglePopup2LimitType(value) {
+				if (value == 0) {
+					$('.popup2-limit-type').hide();
+					$('.popup2-choose-page').hide();
+				}
+				else if (value == 1 || value == 2 || value == 3) {
+					$('.popup2-limit-type').show();
+					$('.popup2-choose-page').hide();
+				}
+				else if (value == 4) {
+					$('.popup2-limit-type').hide();
+					$('.popup2-choose-page').show();
+				}
+			}
+
+			togglePopup2LimitType($('#@Html.FieldIdFor(m => m.Popup2LimitType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup2LimitType)').change(function () {
+				togglePopup2LimitType($(this).val());
+			});
+
+		</script>
+}
+
+	@helper  TabPopup3()
+	{
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup3Enabled)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup3Enabled)
+                            @Html.ValidationMessageFor(model => model.Popup3Enabled)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                           @Html.NopLabelFor(model => model.Popup3TriggerType)
+                        </div>
+                        <div class="col-md-9">
+                            <strong>Choose to trigger the popup by (1) delay X seconds, (2) page scrolls X pixels, (3) clicks on elements or (4) mouse leave.</strong><br />
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup3ShowOnceOnly)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup3ShowOnceOnly)
+                            @Html.ValidationMessageFor(model => model.Popup3ShowOnceOnly)
+                        </div>
+                    </div>
+                    <div class="form-group popup3-expired-in-days">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup3ShowOnceResetDays)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup3ShowOnceResetDays)
+                            @Html.ValidationMessageFor(model => model.Popup3ShowOnceResetDays)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup3LimitType)
+                        </div>
+                        <div class="col-md-9">
+                            <strong>Show the popup on certain pages only. Choose between (1) Fixed Url, (2) Wildcard URL, (3) URL based on RegEx or (4) Home / Product / Category page.</strong><br />
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            @Html.NopLabelFor(model => model.Popup3SelectedStoreIds)
+                        </div>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.Popup3SelectedStoreIds, new { SelectList = Model.Popup3AvailableStores })
+                            <script>
+                                $(document).ready(function() {
+
+				                var data = {
+                                    Popup3SelectedStoreIds: $('#@Html.FieldIdFor(model => model.Popup3SelectedStoreIds)').val()
+                          	    };
+                         	      addAntiForgeryToken(data);
+
+                                    var storesIdsInput = $('#@Html.FieldIdFor(model => model.Popup3SelectedStoreIds)').data("kendoMultiSelect");
+                                    storesIdsInput.setOptions({
+                                        autoClose: false
+                                    });
+
+                                    @if (Model.Popup3AvailableStores.Count == 0)
+                            {
+                                <text>
+                                    storesIdsInput.setOptions({
+                                        enable: false,
+                                        placeholder: 'No stores available'
+                                    });
+                                    storesIdsInput._placeholder();
+                                    storesIdsInput._enable();
+                                    </text>
+                            }
+                                });
+                            </script>
+                        </div>
+                    </div>
+					@(Html.LocalizedEditor<ConfigurationModel, ConfigurationModel.ConfigurationLocalizedModel>("popup3-localized",
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup3Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Locales[item].Popup3Title)
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup3Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup3Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Locales[item].Popup3Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup3Content)
+                             <div>
+                                 <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                 Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                             </div>
+								 </div>
+							 </div>
+                             @Html.HiddenFor(model => model.Locales[item].LanguageId)
+						</div>
+					,
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup3Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Popup3Title)
+									 @Html.ValidationMessageFor(model => model.Popup3Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup3Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Popup3Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Popup3Content)
+                             <div>
+                                 <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                 Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                             </div>
+								 </div>
+							 </div>
+						</div>
+					))
+
+					<div class="form-group">
+						<div class="col-md-3">
+							&nbsp;
+						</div>
+						<div class="col-md-9">
+							<input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+            function togglePopup3ExpiredInDays(val) {
+                if (val) {
+                    $('.popup3-expired-in-days').show();
+                }
+                else {
+                    $('.popup3-expired-in-days').hide();
+                }
+            }
+            togglePopup3ExpiredInDays($('#@Html.FieldIdFor(m => m.Popup3ShowOnceOnly)').prop('checked'));
+            $('#@Html.FieldIdFor(m => m.Popup3ShowOnceOnly)').change(function () {
+                togglePopup3ExpiredInDays($(this).prop('checked'));
+            });
+
+			function togglePopup3TriggerType(val) {
+				if (val == 0 || val == 4) {
+					$('.popup3-delay-seconds').hide();
+					$('.popup3-delay-scroll').hide();
+					$('.popup3-delay-click').hide();
+				}
+				else if (val == 1) {
+					$('.popup3-delay-seconds').show();
+					$('.popup3-delay-scroll').hide();
+					$('.popup3-delay-click').hide();
+				}
+				else if (val == 2) {
+					$('.popup3-delay-seconds').hide();
+					$('.popup3-delay-scroll').show();
+					$('.popup3-delay-click').hide();
+				}
+				else if (val == 3) {
+					$('.popup3-delay-seconds').hide();
+					$('.popup3-delay-scroll').hide();
+					$('.popup3-delay-click').show();
+				}
+
+			}
+
+			togglePopup3TriggerType($('#@Html.FieldIdFor(m => m.Popup3TriggerType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup3TriggerType)').change(function () {
+				togglePopup3TriggerType($(this).val());
+			});
+
+			function togglePopup3LimitType(value) {
+				if (value == 0) {
+					$('.popup3-limit-type').hide();
+					$('.popup3-choose-page').hide();
+				}
+				else if (value == 1 || value == 2 || value == 3) {
+					$('.popup3-limit-type').show();
+					$('.popup3-choose-page').hide();
+				}
+				else if (value == 4) {
+					$('.popup3-limit-type').hide();
+					$('.popup3-choose-page').show();
+				}
+			}
+
+			togglePopup3LimitType($('#@Html.FieldIdFor(m => m.Popup3LimitType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup3LimitType)').change(function () {
+				togglePopup3LimitType($(this).val());
+			});
+
+		</script>
+}
+
+	@helper TabPopup4()
+	{
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup4Enabled)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup4Enabled)
+                            @Html.ValidationMessageFor(model => model.Popup4Enabled)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup4TriggerType)
+                        </div>
+                        <div class="col-md-9">
+                            <strong>Choose to trigger the popup by (1) delay X seconds, (2) page scrolls X pixels, (3) clicks on elements or (4) mouse leave.</strong><br />
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup4ShowOnceOnly)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup4ShowOnceOnly)
+                            @Html.ValidationMessageFor(model => model.Popup4ShowOnceOnly)
+                        </div>
+                    </div>
+                    <div class="form-group popup4-expired-in-days">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup4ShowOnceResetDays)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Popup4ShowOnceResetDays)
+                            @Html.ValidationMessageFor(model => model.Popup4ShowOnceResetDays)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.Popup4LimitType)
+                        </div>
+                        <div class="col-md-9">
+                            <strong>Show the popup on certain pages only. Choose between (1) Fixed Url, (2) Wildcard URL, (3) URL based on RegEx or (4) Home / Product / Category page.</strong><br />
+                            Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            @Html.NopLabelFor(model => model.Popup4SelectedStoreIds)
+                        </div>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.Popup4SelectedStoreIds, new { SelectList = Model.Popup4AvailableStores })
+                            <script>
+                                $(document).ready(function() {
+
+				                var data = {
+                                    Popup4SelectedStoreIds: $('#@Html.FieldIdFor(model => model.Popup4SelectedStoreIds)').val()
+                          	    };
+                         	      addAntiForgeryToken(data);
+
+                                    var storesIdsInput = $('#@Html.FieldIdFor(model => model.Popup4SelectedStoreIds)').data("kendoMultiSelect");
+                                    storesIdsInput.setOptions({
+                                        autoClose: false
+                                    });
+
+                                    @if (Model.Popup4AvailableStores.Count == 0)
+                            {
+                                <text>
+                                    storesIdsInput.setOptions({
+                                        enable: false,
+                                        placeholder: 'No stores available'
+                                    });
+                                    storesIdsInput._placeholder();
+                                    storesIdsInput._enable();
+                                    </text>
+                            }
+                                });
+                            </script>
+                        </div>
+                    </div>
+					@(Html.LocalizedEditor<ConfigurationModel, ConfigurationModel.ConfigurationLocalizedModel>("popup4-localized",
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup4Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Locales[item].Popup4Title)
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup4Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Locales[item].Popup4Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Locales[item].Popup4Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Locales[item].Popup4Content)
+                             <div>
+                                 <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                 Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                             </div>
+								 </div>
+							 </div>
+                             @Html.HiddenFor(model => model.Locales[item].LanguageId)
+						</div>
+					,
+						@<div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup4Title)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.NopEditorFor(model => model.Popup4Title)
+									 @Html.ValidationMessageFor(model => model.Popup4Title)
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <div class="col-md-3">
+									 @Html.NopLabelFor(model => model.Popup4Content)
+								 </div>
+								 <div class="col-md-9">
+									 @Html.EditorFor(model => model.Popup4Content, "RichEditor")
+									 @Html.ValidationMessageFor(model => model.Popup4Content)
+                             <div>
+                                 <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                 Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                             </div>
+								 </div>
+							 </div>
+						</div>
+					))
+
+					<div class="form-group">
+						<div class="col-md-3">
+							&nbsp;
+						</div>
+						<div class="col-md-9">
+							<input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+            function togglePopup4ExpiredInDays(val) {
+                if (val) {
+                    $('.popup4-expired-in-days').show();
+                }
+                else {
+                    $('.popup4-expired-in-days').hide();
+                }
+            }
+            togglePopup4ExpiredInDays($('#@Html.FieldIdFor(m => m.Popup4ShowOnceOnly)').prop('checked'));
+            $('#@Html.FieldIdFor(m => m.Popup4ShowOnceOnly)').change(function () {
+                togglePopup4ExpiredInDays($(this).prop('checked'));
+            });
+
+			function togglePopup4TriggerType(val) {
+				if (val == 0 || val == 4) {
+					$('.popup4-delay-seconds').hide();
+					$('.popup4-delay-scroll').hide();
+					$('.popup4-delay-click').hide();
+				}
+				else if (val == 1) {
+					$('.popup4-delay-seconds').show();
+					$('.popup4-delay-scroll').hide();
+					$('.popup4-delay-click').hide();
+				}
+				else if (val == 2) {
+					$('.popup4-delay-seconds').hide();
+					$('.popup4-delay-scroll').show();
+					$('.popup4-delay-click').hide();
+				}
+				else if (val == 3) {
+					$('.popup4-delay-seconds').hide();
+					$('.popup4-delay-scroll').hide();
+					$('.popup4-delay-click').show();
+				}
+
+			}
+
+			togglePopup4TriggerType($('#@Html.FieldIdFor(m => m.Popup4TriggerType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup4TriggerType)').change(function () {
+				togglePopup4TriggerType($(this).val());
+			});
+
+			function togglePopup4LimitType(value) {
+				if (value == 0) {
+					$('.popup4-limit-type').hide();
+					$('.popup4-choose-page').hide();
+				}
+				else if (value == 1 || value == 2 || value == 3) {
+					$('.popup4-limit-type').show();
+					$('.popup4-choose-page').hide();
+				}
+				else if (value == 4) {
+					$('.popup4-limit-type').hide();
+					$('.popup4-choose-page').show();
+				}
+			}
+
+			togglePopup4LimitType($('#@Html.FieldIdFor(m => m.Popup4LimitType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup4LimitType)').change(function () {
+				togglePopup4LimitType($(this).val());
+			});
+
+		</script>
+}
+
+	@helper TabPopup5()
+	{
+		<div class="panel-group">
+			<div class="panel panel-default">
+			<div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.Popup5Enabled)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.Popup5Enabled)
+                        @Html.ValidationMessageFor(model => model.Popup5Enabled)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                       @Html.NopLabelFor(model => model.Popup5TriggerType)
+                    </div>
+                    <div class="col-md-9">
+                        <strong>Choose to trigger the popup by (1) delay X seconds, (2) page scrolls X pixels, (3) clicks on elements or (4) mouse leave.</strong><br />
+                        Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.Popup5ShowOnceOnly)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.Popup5ShowOnceOnly)
+                        @Html.ValidationMessageFor(model => model.Popup5ShowOnceOnly)
+                    </div>
+                </div>
+                <div class="form-group popup5-expired-in-days">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.Popup5ShowOnceResetDays)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.Popup5ShowOnceResetDays)
+                        @Html.ValidationMessageFor(model => model.Popup5ShowOnceResetDays)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.Popup5LimitType)
+                    </div>
+                    <div class="col-md-9">
+                        <strong>Show the popup on certain pages only. Choose between (1) Fixed Url, (2) Wildcard URL, (3) URL based on RegEx or (4) Home / Product / Category page.</strong><br />
+                        Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        @Html.NopLabelFor(model => model.Popup5SelectedStoreIds)
+                    </div>
+                    <div class="col-sm-9">
+                        @Html.EditorFor(model => model.Popup5SelectedStoreIds, new { SelectList = Model.Popup5AvailableStores })
+                        <script>
+                                $(document).ready(function() {
+
+				                var data = {
+                                    Popup5SelectedStoreIds: $('#@Html.FieldIdFor(model => model.Popup5SelectedStoreIds)').val()
+                          	    };
+                         	      addAntiForgeryToken(data);
+
+                                    var storesIdsInput = $('#@Html.FieldIdFor(model => model.Popup5SelectedStoreIds)').data("kendoMultiSelect");
+                                    storesIdsInput.setOptions({
+                                        autoClose: false
+                                    });
+
+                                    @if (Model.Popup5AvailableStores.Count == 0)
+                            {
+                                <text>
+                                    storesIdsInput.setOptions({
+                                        enable: false,
+                                        placeholder: 'No stores available'
+                                    });
+                                    storesIdsInput._placeholder();
+                                    storesIdsInput._enable();
+                                    </text>
+                            }
+                                });
+                        </script>
+                    </div>
+                </div>
+				@(Html.LocalizedEditor<ConfigurationModel, ConfigurationModel.ConfigurationLocalizedModel>("popup5-localized",
+				@<div>
+					<div class="form-group">
+						<div class="col-md-3">
+							@Html.NopLabelFor(model => model.Locales[item].Popup5Title)
+						</div>
+						<div class="col-md-9">
+							@Html.NopEditorFor(model => model.Locales[item].Popup5Title)
+							@Html.ValidationMessageFor(model => model.Locales[item].Popup5Title)
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-3">
+							@Html.NopLabelFor(model => model.Locales[item].Popup5Content)
+						</div>
+						<div class="col-md-9">
+							@Html.EditorFor(model => model.Locales[item].Popup5Content, "RichEditor")
+							@Html.ValidationMessageFor(model => model.Locales[item].Popup5Content)
+                            <div>
+                                <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                            </div>
+						</div>
+					</div>
+                     @Html.HiddenFor(model => model.Locales[item].LanguageId)
+				</div>
+					,
+				@<div>
+					<div class="form-group">
+						<div class="col-md-3">
+							@Html.NopLabelFor(model => model.Popup5Title)
+						</div>
+						<div class="col-md-9">
+							@Html.NopEditorFor(model => model.Popup5Title)
+							@Html.ValidationMessageFor(model => model.Popup5Title)
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-3">
+							@Html.NopLabelFor(model => model.Popup5Content)
+						</div>
+						<div class="col-md-9">
+							@Html.EditorFor(model => model.Popup5Content, "RichEditor")
+							@Html.ValidationMessageFor(model => model.Popup5Content)
+                            <div>
+                                <strong>Pro Version allows you to show login form as part of the content. Just enter <em><u>[loginform]</u></em> to display the form.</strong><br />
+                                Purchase Popup Maker Pro to enable this feature. <a href="https://www.pronopcommerce.com/popup-maker">Purchase Now</a>
+                            </div>
+						</div>
+					</div>
+				</div>
+					))
+
+				<div class="form-group">
+					<div class="col-md-3">
+						&nbsp;
+					</div>
+					<div class="col-md-9">
+						<input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+					</div>
+				</div>
+
+			</div>
+		</div>
+		</div>
+
+		<script type="text/javascript">
+            function togglePopup5ExpiredInDays(val) {
+                if (val) {
+                    $('.popup5-expired-in-days').show();
+                }
+                else {
+                    $('.popup5-expired-in-days').hide();
+                }
+            }
+            togglePopup5ExpiredInDays($('#@Html.FieldIdFor(m => m.Popup5ShowOnceOnly)').prop('checked'));
+            $('#@Html.FieldIdFor(m => m.Popup5ShowOnceOnly)').change(function () {
+                togglePopup5ExpiredInDays($(this).prop('checked'));
+            });
+
+			function togglePopup5TriggerType(val) {
+				if (val == 0 || val == 4) {
+					$('.popup5-delay-seconds').hide();
+					$('.popup5-delay-scroll').hide();
+					$('.popup5-delay-click').hide();
+				}
+				else if (val == 1) {
+					$('.popup5-delay-seconds').show();
+					$('.popup5-delay-scroll').hide();
+					$('.popup5-delay-click').hide();
+				}
+				else if (val == 2) {
+					$('.popup5-delay-seconds').hide();
+					$('.popup5-delay-scroll').show();
+					$('.popup5-delay-click').hide();
+				}
+				else if (val == 3) {
+					$('.popup5-delay-seconds').hide();
+					$('.popup5-delay-scroll').hide();
+					$('.popup5-delay-click').show();
+				}
+
+			}
+
+			togglePopup5TriggerType($('#@Html.FieldIdFor(m => m.Popup5TriggerType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup5TriggerType)').change(function () {
+				togglePopup5TriggerType($(this).val());
+			});
+
+			function togglePopup5LimitType(value) {
+				if (value == 0) {
+					$('.popup5-limit-type').hide();
+					$('.popup5-choose-page').hide();
+				}
+				else if (value == 1 || value == 2 || value == 3) {
+					$('.popup5-limit-type').show();
+					$('.popup5-choose-page').hide();
+				}
+				else if (value == 4) {
+					$('.popup5-limit-type').hide();
+					$('.popup5-choose-page').show();
+				}
+			}
+
+			togglePopup5LimitType($('#@Html.FieldIdFor(m => m.Popup5LimitType)').val());
+
+			$('#@Html.FieldIdFor(m => m.Popup5LimitType)').change(function () {
+				togglePopup5LimitType($(this).val());
+			});
+
+		</script>
+    }
+
+    @helper TabConfigure()
+    {
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.ProductKey)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.ProductKey)
+                            @Html.ValidationMessageFor(model => model.ProductKey)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-md-9">
+                            <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+}

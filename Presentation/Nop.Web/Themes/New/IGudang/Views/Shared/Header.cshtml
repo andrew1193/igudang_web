@@ -1,0 +1,54 @@
+﻿
+<!-- Top Bar
+============================================= -->
+<!-- #BeginLibraryItem "/Library/Top-Bar.lbi" -->		<div id="top-bar" class="nobottomborder">
+    <div class="container clearfix">
+        <div class="col_half nobottommargin hidden-xs">
+            <ul class="list-inline list-unstyled igudant-top-left nomargin nopadding">
+                <li><i class="top-icon icon-topshield"></i>100% Buyer Protection</li>
+                <li><i class="top-icon icon-topcash"></i>Cash On Delivery</li>
+            </ul>
+        </div>
+
+        <div class="col_half col_last fright nobottommargin">
+            <!-- Top Links
+            ============================================= -->
+            <div class="top-links">
+                <ul>
+                    @Html.Action("AdminHeaderLinks", "Common")
+                    @Html.Action("HeaderLinks", "Common")
+                   
+                   
+                </ul>
+            </div><!-- .top-links end -->
+        </div>
+    </div>
+</div>
+
+
+
+
+<header id="header" class="no-sticky nobottomborder">
+
+    <div id="header-wrap">
+        <div class="container clearfix">
+            <a href="#" class="side-panel-trigger igudang-side-nav-trigger"><i class="icon-line-align-left"></i></a>
+
+            <!-- Logo
+            ============================================= -->
+            <div id="logo" class="divcenter igudang-logo">
+                @Html.Action("Logo", "Common")
+            </div><!-- #logo end -->
+
+            <div class="top-search">
+                <div id="top-search">
+                    <a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i></a>
+                    <form action="search.html" method="get">
+                        <input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter..">
+                    </form>
+                </div><!-- #top-search end -->
+            </div>
+        </div>
+    </div>
+</header><!-- #header end -->
+

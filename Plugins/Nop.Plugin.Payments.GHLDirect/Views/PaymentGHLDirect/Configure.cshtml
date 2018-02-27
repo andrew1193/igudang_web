@@ -1,0 +1,193 @@
+﻿@{
+    Layout = "";
+}
+@model ConfigurationModel
+@using Nop.Plugin.Payments.GHLDirect.Models;
+@using Nop.Web.Framework;
+@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="adminContent">
+                    <tr>
+                            <td colspan="2">
+                                <b>
+                                    If you're using this gateway ensure that your primary store currency is supported
+                                    by eGHL.
+                                </b>
+                                <br />
+                                <p>Supported currency for this gateway are listed in below table.</p>
+                                <table>
+                                    <tr>
+                                        <th>Currency Code </th>
+                                        <th>Currency</th>
+                                    </tr>
+                                    <tr>
+                                        <td>MYR</td>
+                                        <td>Malaysia Ringgit</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SGD</td>
+                                        <td>Singapore Dollar</td>
+                                    </tr>
+                                    <tr>
+                                        <td>THB</td>
+                                        <td>Thai Baht</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CNY</td>
+                                        <td>China Yuan (Ren Min Bi)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PHP</td>
+                                        <td>Philippine Peso</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    @*<tr>
+                            <td colspan="2">
+                                <hr />
+                            </td>
+                        </tr>*@
+                    
+                </table>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.GHLDirectAPIUrl_OverrideForStore, model => model.GHLDirectAPIUrl, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.GHLDirectAPIUrl)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.GHLDirectAPIUrl)
+                        @Html.ValidationMessageFor(model => model.GHLDirectAPIUrl)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.PaymentMethod_OverrideForStore, model => model.PaymentMethod, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.PaymentMethod)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.PaymentMethod)
+                        @Html.ValidationMessageFor(model => model.PaymentMethod)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.MerchantServiceId_OverrideForStore, model => model.MerchantServiceId, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.MerchantServiceId)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.MerchantServiceId)
+                        @Html.ValidationMessageFor(model => model.MerchantServiceId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.MerchantPassword_OverrideForStore, model => model.MerchantPassword, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.MerchantPassword)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.MerchantPassword)
+                        @Html.ValidationMessageFor(model => model.MerchantPassword)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.MerchantName_OverrideForStore, model => model.MerchantName, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.MerchantName)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.MerchantName)
+                        @Html.ValidationMessageFor(model => model.MerchantName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.PageTimeoutForCompeletePaymentProcess_OverrideForStore, model => model.PageTimeoutForCompeletePaymentProcess, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.PageTimeoutForCompeletePaymentProcess)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.PageTimeoutForCompeletePaymentProcess)
+                        @Html.ValidationMessageFor(model => model.PageTimeoutForCompeletePaymentProcess)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.PdtValidateOrderTotal_OverrideForStore, model => model.PdtValidateOrderTotal, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.PdtValidateOrderTotal)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.PdtValidateOrderTotal)
+                        @Html.ValidationMessageFor(model => model.PdtValidateOrderTotal)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.AdditionalFeePercentage_OverrideForStore, model => model.AdditionalFeePercentage, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.AdditionalFeePercentage)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.AdditionalFeePercentage)
+                        @Html.ValidationMessageFor(model => model.AdditionalFeePercentage)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.PassProductNamesAndTotals_OverrideForStore, model => model.PassProductNamesAndTotals, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.PassProductNamesAndTotals)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.PassProductNamesAndTotals)
+                        @Html.ValidationMessageFor(model => model.PassProductNamesAndTotals)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.EnablePassingBillingAddressToPaymentGateway_OverrideForStore, model => model.EnablePassingBillingAddressToPaymentGateway, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.EnablePassingBillingAddressToPaymentGateway)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.EnablePassingBillingAddressToPaymentGateway)
+                        @Html.ValidationMessageFor(model => model.EnablePassingBillingAddressToPaymentGateway)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.EnablePassingShippingAddressToPaymentGateway_OverrideForStore, model => model.EnablePassingShippingAddressToPaymentGateway, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.EnablePassingShippingAddressToPaymentGateway)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.EnablePassingShippingAddressToPaymentGateway)
+                        @Html.ValidationMessageFor(model => model.EnablePassingShippingAddressToPaymentGateway)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.OverrideStoreCheckboxFor(model => model.ReturnFromGHLDirectWithoutPaymentRedirectsToOrderDetailsPage_OverrideForStore, model => model.ReturnFromGHLDirectWithoutPaymentRedirectsToOrderDetailsPage, Model.ActiveStoreScopeConfiguration)
+                        @Html.NopLabelFor(model => model.ReturnFromGHLDirectWithoutPaymentRedirectsToOrderDetailsPage)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.ReturnFromGHLDirectWithoutPaymentRedirectsToOrderDetailsPage)
+                        @Html.ValidationMessageFor(model => model.ReturnFromGHLDirectWithoutPaymentRedirectsToOrderDetailsPage)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-9">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

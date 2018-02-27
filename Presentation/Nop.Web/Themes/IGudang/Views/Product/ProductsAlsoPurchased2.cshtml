@@ -1,0 +1,19 @@
+﻿@model IList<ProductOverviewModel>
+
+@using Nop.Web.Models.Catalog;
+
+@if (Model.Count > 0)
+{
+    <div class="bottomborder"></div>
+    <div class="row checktout-product">
+        <div class="col-xs-12">
+            <h4 class="mb-2">People who bought this item also bought</h4>
+        </div>
+        @foreach (var item in Model)
+        {
+            @Html.Partial("_ProductBoxAlsoPurchase", item)
+        }
+    </div>
+   
+}
+

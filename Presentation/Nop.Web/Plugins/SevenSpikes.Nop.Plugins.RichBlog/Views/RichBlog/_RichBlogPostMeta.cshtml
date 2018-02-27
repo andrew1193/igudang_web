@@ -1,0 +1,18 @@
+﻿@using SevenSpikes.Nop.Plugins.RichBlog.Models;
+
+@model RichBlogMetaModel
+
+@if(!string.IsNullOrEmpty(Model.BlogPostImageUrl))
+{
+    <meta property="og:image" content="@Model.BlogPostImageUrl"/>
+}
+
+@if (!string.IsNullOrEmpty(Model.BlogPostUrl))
+{
+    <meta property="og:url" content="@Model.BlogPostUrl" />
+}
+
+@if (!string.IsNullOrEmpty(Model.BlogPostTitle))
+{
+    <meta property="og:title" content="@Model.BlogPostTitle" />
+}

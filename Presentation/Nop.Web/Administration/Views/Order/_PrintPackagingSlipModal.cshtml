@@ -1,0 +1,102 @@
+﻿@using Nop.Admin.Models.Orders
+@model List<ShipmentModel>
+
+@if (Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+
+        <div style="max-width: 600px; margin: auto;" class="email-container" data-id="@item.Id">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width: 600px;">
+                <tr>
+                    <td bgcolor="#ffffff" align="center" style="position: relative">
+                        <div class="title-wrap">
+                            <h2 style="font-family: sans-serif; color: #000;">Receiver Copy</h2>
+                        </div>
+                        <img src="@Url.Content(string.Format("~/Themes/IGudang/Content/images/receipt/title-bg.jpg", ""))" width="600" height="" alt="alt_text" border="0" align="center" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; margin: auto;" class="g-img">
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ffffff" align="center" height="100%" valign="top" width="100%" style="padding-bottom: 40px">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:560px;">
+                            <tr>
+                                <td align="center" valign="top" width="50%">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;">
+                                        <tr>
+                                            <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 10px 10px 0;" class="stack-column-center">
+                                                <h3>Sender Account</h3>
+                                                <h4>iGudang</h4>
+                                                <p style="margin: 0;">92, Jalan 45/88, Kota Kemuning, 40400 Kota Kemuning, Selangor, Malaysia</p>
+                                                <p style="margin: 0;">Contact: 03-1234 5678</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td align="center" valign="top" width="50%">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px;text-align: left;">
+                                        <tr>
+                                            <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 10px 10px 0;" class="stack-column-center">
+                                                <h3>Receiver</h3>
+                                                <h4>@item.receiver.receiverName</h4>
+                                                <p style="margin: 0;">@item.receiver.address</p>
+                                                <p style="margin: 0;">Contact: @item.receiver.contact</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td aria-hidden="true" height="1" style="font-size: 0; line-height: 0; background: #fff; padding: 0 20px">
+                        <div style="background: #d5d5d5; height: 1px; width: 100%;"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ffffff" align="center" height="100%" valign="top" width="100%" style="padding-bottom: 40px">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:560px;">
+                            <tr>
+                                <td align="center" valign="top" width="100%">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;">
+                                        <tr>
+                                            <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" class="code-img" valign="middle">
+                                                <div style="padding: 20px">
+                                                    <img src="@item.qrCodeUrl" style="width: 100%; vertical-align: middle">
+                                                </div>
+                                            </td>
+                                            <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" class="code-des" valign="middle">
+                                                <ul class="unlist-style">
+                                                    <li>Shipment ID : @item.Id</li>
+                                                    <li>Order ID : @item.OrderId</li>
+                                                    @if (item.ParcelSize != null)
+                                                    {
+                                                        <li>Size : @item.ParcelSize</li>
+                                                    }
+                                                    @if (item.ParcelVolume != null)
+                                                    {
+                                                        <li>Volume : @item.ParcelVolume</li>
+                                                    }
+                                                    @if (item.ParcelWeight != null)
+                                                    {
+                                                        <li>Weight : @item.ParcelWeight kg</li>
+                                                    }
+                                                    @if (item.TrackingNumber != null)
+                                                    {
+                                                        <li>Ref No. : @item.TrackingNumber</li>
+                                                    }
+                                                    <li>Courier : Ninja Van</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr />
+    }
+}

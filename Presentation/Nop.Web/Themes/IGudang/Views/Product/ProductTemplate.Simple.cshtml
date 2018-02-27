@@ -1,0 +1,372 @@
+﻿@model ProductDetailsModel
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    //meta
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+    //page class
+    Html.AppendPageCssClassParts("html-product-details-page");
+
+    var seoSettings = EngineContext.Current.Resolve<SeoSettings>();
+
+    //canonical URL
+    if (seoSettings.CanonicalUrlsEnabled)
+    {
+        var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(productUrl);
+    }
+
+    //open graph META tags
+    if (seoSettings.OpenGraphMetaTags)
+    {
+        Html.AddHeadCustomParts("<meta property=\"og:type\" content=\"product\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:description\" content=\"" + Html.Encode(Nop.Core.Html.HtmlHelper.StripTags(Model.MetaDescription)) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:url\" content=\"" + Request.Url.AbsoluteUri + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:site_name\" content=\"" + Html.Encode(Model.CurrentStoreName) + "\" />");
+    }
+
+    //Twitter META tags
+    if (seoSettings.TwitterMetaTags)
+    {
+        Html.AddHeadCustomParts("<meta property=\"twitter:card\" content=\"summary\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:site\" content=\"" + Html.Encode(Model.CurrentStoreName) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:description\" content=\"" + Html.Encode(Nop.Core.Html.HtmlHelper.StripTags(Model.MetaDescription)) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:url\" content=\"" + Request.Url.AbsoluteUri + "\" />");
+    }
+}
+
+@Html.Widget("productdetails_top", Model.Id)
+@using (Html.BeginRouteForm("Product", new { SeName = Model.SeName }, FormMethod.Post, new { id = "product-details-form" }))
+{
+    <input type="hidden" id="hfError" value="@Model.error" />
+    <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+        <div class="container clearfix">
+            <div class="single-product">
+                @Html.Partial("_Discontinued", Model)
+                <div class="product-header">
+                    <h2 itemprop="name">@Model.Name</h2>
+                </div>
+                <div class="product-header-sec clearfix">
+                    <!-- Top rating result
+                    ============================================= -->
+                    @Html.Partial("_ProductReviewOverview", Model.ProductReviewOverview)
+                    <!-- Top Social Share
+                    ============================================= -->
+                    @Html.Partial("_ShareButton", Model)
+                    <ul class="list-inline nobottommargin fright">
+                        @Html.Widget("productdetails_inside_overview_buttons_before", Model.Id)
+                        @{
+                            var dataDictAddToWishlist = new ViewDataDictionary();
+                            dataDictAddToWishlist.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", Model.Id);
+                            @Html.Partial("_AddToWishlist", Model.AddToCart, dataDictAddToWishlist)
+                        }
+
+                        @Html.Widget("productdetails_inside_overview_buttons_after", Model.Id)
+
+                        <li> | </li>
+                    </ul>
+                </div>
+                <div class="product">
+                    <div class="row bottomborder mb-2">
+                        <div class="col-md-6 mb-1">
+                            @Html.Widget("productdetails_before_pictures", Model.Id)
+                            <!--product pictures-->
+                            @Html.Partial("_ProductDetailsPictures", Model)
+                            @Html.Widget("productdetails_after_pictures", Model.Id)
+                            <!-- Product Single - Gallery
+                            ============================================= -->
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <div class="row">
+                                <div class="col-md-6 product-desc">
+                                    <!--attributes-->
+                                    @{
+                                        var dataDictAttributes = new ViewDataDictionary();
+                                        dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+                                        @Html.Partial("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)
+                                    }
+
+                                    <!-- Product Single - Price
+                                    ============================================= -->
+                                    <div class="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                        @{
+                                            var dataDictPrice = new ViewDataDictionary();
+                                            dataDictPrice.TemplateInfo.HtmlFieldPrefix = string.Format("price_{0}", Model.Id);
+                                            @Html.Partial("_ProductPrice", Model.ProductPrice, dataDictPrice)
+
+                                            @Html.Partial("_ProductTierPrices", Model.TierPrices)
+
+                                        }
+                                        <div class="clear"></div>
+                                        <div class="line"></div>
+                                        <!-- Product Single - Quantity & Cart Button
+                                        ============================================= -->
+                                        @Html.Partial("_Availability", Model)
+                                        @{
+                                            var dataDictAddToCart = new ViewDataDictionary();
+                                            dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", Model.Id);
+                                            @Html.Partial("_AddToCart", Model.AddToCart, dataDictAddToCart)
+                                        }
+                                        <!-- Product Single - Quantity & Cart Button End -->
+                                    </div><!-- Product Single - Price End -->
+
+
+
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="selling-detail-container">
+                                        <div class="feature-box igudang-feature-box">
+                                            @*<h3 class="ftz-14 font-cap">Standard: <span class="font-light">Sat 2 - Fri 8 Dec</span></h3>*@
+                                            <p class="notopmargin">Standard Delivery</p>
+                                            <span class="font-light"><strong>@Model.DeliveryDate Upon Payment Confirmation</strong></span>
+                                            @*<p class="notopmargin"><span class="delivery-status">Free</span></p>*@
+                                        </div>
+                                        @if (Model.ShowVendor)
+                                        {
+                                            <div class="feature-box igudang-feature-box">
+                                                <p class="notopmargin">Sold By</p>
+                                                <h3>@Model.VendorModel.Name</h3>
+                                            </div>
+                                        }
+                                        <div class="feature-box igudang-feature-box" style="display:none">
+                                            <p class="notopmargin">Positive Seller Rating</p>
+                                            <h3>69%</h3>
+                                        </div>
+                                        @if (Model.ProductEvent.Id > 0)
+                                        {
+                                            <div class="feature-box igudang-feature-box">
+                                                <p class="notopmargin">Sales Campaign</p>
+                                                <h3>@Model.ProductEvent.StartDate.ToString("dd-MM-yyyy") - @Model.ProductEvent.EndDate.ToString("dd-MM-yyyy")</h3>
+                                            </div>
+                                        }
+
+                                        <div class="feature-box igudang-feature-box noborder" style="display:none">
+                                            <p class="notopmargin">Seller Size</p>
+                                            <div class="saller-result-wrap">
+                                                <ul class="seller-size-icon nobottommargin list-unstyled" data-level="4">
+                                                    <li class="seller-size-icon__bar seller-size-icon__bar_level-1 seller-size-icon__bar_painted"></li>
+                                                    <li class="seller-size-icon__bar seller-size-icon__bar_level-2 seller-size-icon__bar_painted"></li>
+                                                    <li class="seller-size-icon__bar seller-size-icon__bar_level-3 seller-size-icon__bar_painted"></li>
+                                                    <li class="seller-size-icon__bar seller-size-icon__bar_level-4 seller-size-icon__bar_painted"></li>
+                                                    <li class="seller-size-icon__bar seller-size-icon__bar_level-5 "></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="display:none">
+                                <div class="col-md-6 border-right">
+                                    <div class="feature-box igudang-feature-box noborder" style="display:none">
+                                        <h3 class="ftz-14 font-cap">Want to save RM25?</h3>
+                                        <p class="notopmargin">Share iGudang with your friend and save now!</p>
+                                        <a href="#" class="share-save-btn">Share & Save</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="feature-box igudang-feature-box nobottomborder">
+                                        <ul class="list-unstyled nobottommargin side-feature">
+                                            <li><i class="feature-icon icon-delivery"></i>Cash on Delivery not available</li>
+                                            <li><i class="feature-icon icon-days"></i>7 days easy return</li>
+                                            <li><i class="feature-icon icon-warranty"></i>No warranty available</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    @if (!String.IsNullOrEmpty(Model.FullDescription))
+                    {
+                        <div class="col_full bottomborder pb-3 mb-2" itemprop="description">
+                            @Html.Raw(Model.FullDescription)
+                        </div>
+                    }
+                    @Html.Action("ProductsAlsoPurchased", "Product", new { productId = Model.Id })
+                </div>
+            </div>
+        </div>
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="rating-saction">
+                        <div class="detail-title">
+                            <h3>Rating & Reviews of @Model.Name</h3>
+                        </div>
+                        <div class="row">
+                            @Html.Partial("ProductRateDetails", Model.ProductReviewOverview)
+                            @if (Model.ProductReviewOverview.AllowCustomerReviews)
+                            {
+                                <div class="col-md-6 mb-1">
+                                    <!-- Modal Reviews
+                                    ============================================= -->
+                                    <a href="#" data-toggle="modal" data-target="#reviewFormModal2" class="button nomargin fright igudang-review-btn" id="btnOpenPurchase">@T("Products.AddAReview")</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-2 pt-2">
+                <div class="col-md-12">
+                    <h5>Product Reviews</h5>
+                    <div id="reviews" class="clearfix">
+                        @Html.Action("ProductReviewTab", "Product", new { productId = Model.Id })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+                                            }
+
+
+<div class="modal fade" id="reviewFormModal2" tabindex="-1" role="dialog" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="reviewFormModalLabel">Submit a Review</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Action("AddReviewPanel", "Product", new { productId = Model.Id })
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+@*@{
+        string tempval = TempData["message"].ToString();
+    }*@
+
+@*<script type="text/javascript">
+
+    $(document).ready(function () {
+        console.log($('#hfError').val());
+        if ($('#hfError').val() == "review") {
+            $('#reviewFormModal2').modal('show');
+            //$('#btnOpenPurchase').click();
+        };
+    });
+</script>*@
+
+
+@*<div class="page product-details-page">
+        <div class="page-body">
+            @Html.Widget("productdetails_top", Model.Id)
+            @using (Html.BeginRouteForm("Product", new { SeName = Model.SeName }, FormMethod.Post, new { id = "product-details-form" }))
+            {
+                <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+                    <div class="product-essential">
+                        @Html.Widget("productdetails_before_pictures", Model.Id)
+                        <!--product pictures-->
+                        @Html.Partial("_ProductDetailsPictures", Model)
+                        @Html.Widget("productdetails_after_pictures", Model.Id)
+                        <div class="overview">
+                            @Html.Partial("_Discontinued", Model)
+                            <div class="product-name">
+                                <h1 itemprop="name">
+                                    @Model.Name
+                                </h1>
+                            </div>
+                            @if (!String.IsNullOrEmpty(Model.ShortDescription))
+                            {
+                                <div class="short-description">
+                                    @Html.Raw(Model.ShortDescription)
+                                </div>
+                            }
+                            @Html.Widget("productdetails_overview_top", Model.Id)
+                            <!--product reviews-->
+                            @Html.Partial("_ProductReviewOverview", Model.ProductReviewOverview)
+                            <!--manufacturers-->
+                            @Html.Partial("_ProductManufacturers", Model.ProductManufacturers)
+                            <!--availability-->
+                            @Html.Partial("_Availability", Model)
+                            <!--SKU, MAN, GTIN, vendor-->
+                            @Html.Partial("_SKU_Man_GTIN_Ven", Model)
+                            <!--delivery-->
+                            @Html.Partial("_DeliveryInfo", Model)
+                            <!--sample download-->
+                            @Html.Partial("_DownloadSample", Model)
+                            <!--attributes-->
+                            @{
+                                var dataDictAttributes = new ViewDataDictionary();
+                                dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+                                @Html.Partial("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)
+                            }
+                            <!--gift card-->
+                            @{
+                                var dataDictGiftCard = new ViewDataDictionary();
+                                dataDictGiftCard.TemplateInfo.HtmlFieldPrefix = string.Format("giftcard_{0}", Model.Id);
+                                @Html.Partial("_GiftCardInfo", Model.GiftCard, dataDictGiftCard)
+                            }
+                            <!--rental info-->
+                            @{
+                                var dataDictRental = new ViewDataDictionary();
+                                dataDictRental.TemplateInfo.HtmlFieldPrefix = string.Format("rental_{0}", Model.Id);
+                                @Html.Partial("_RentalInfo", Model, dataDictRental)
+                            }
+                            <!--price & add to cart-->
+                            @{
+                                var dataDictPrice = new ViewDataDictionary();
+                                dataDictPrice.TemplateInfo.HtmlFieldPrefix = string.Format("price_{0}", Model.Id);
+                                @Html.Partial("_ProductPrice", Model.ProductPrice, dataDictPrice)
+
+                                @Html.Partial("_ProductTierPrices", Model.TierPrices)
+
+                                var dataDictAddToCart = new ViewDataDictionary();
+                                dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", Model.Id);
+                                @Html.Partial("_AddToCart", Model.AddToCart, dataDictAddToCart)
+                            }
+                            <!--wishlist, compare, email a friend-->
+                            <div class="overview-buttons">
+                                @Html.Widget("productdetails_inside_overview_buttons_before", Model.Id)
+                                @{
+                                    var dataDictAddToWishlist = new ViewDataDictionary();
+                                    dataDictAddToWishlist.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", Model.Id);
+                                    @Html.Partial("_AddToWishlist", Model.AddToCart, dataDictAddToWishlist)
+                                }
+                                @Html.Partial("_CompareProductsButton", Model)
+                                @Html.Partial("_ProductEmailAFriendButton", Model)
+                                @Html.Widget("productdetails_inside_overview_buttons_after", Model.Id)
+                            </div>
+                            @Html.Partial("_ShareButton", Model)
+                            @Html.Widget("productdetails_overview_bottom", Model.Id)
+                        </div>
+                        @if (!String.IsNullOrEmpty(Model.FullDescription))
+                        {
+                            <div class="full-description" itemprop="description">
+                                @Html.Raw(Model.FullDescription)
+                            </div>
+                        }
+                    </div>
+                    @Html.Widget("productdetails_before_collateral", Model.Id)
+                    <div class="product-collateral">
+                        @Html.Partial("_ProductSpecifications", Model.ProductSpecifications)
+                        @Html.Partial("_ProductTags", Model.ProductTags)
+                    </div>
+                    @Html.Action("ProductsAlsoPurchased", "Product", new { productId = Model.Id })
+                    @Html.Action("RelatedProducts", "Product", new { productId = Model.Id })
+                </div>
+            }
+            @Html.Widget("productdetails_bottom", Model.Id)
+        </div>
+    </div>*@

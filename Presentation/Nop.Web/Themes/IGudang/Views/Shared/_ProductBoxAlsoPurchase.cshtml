@@ -1,0 +1,68 @@
+﻿@model ProductOverviewModel
+@using Nop.Core
+@using Nop.Core.Domain.Catalog
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Catalog;
+@{
+    //prepare "Add to cart" AJAX link
+    string addtocartlink = "";
+    var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+    var quantity = 1;
+    if (Model.ProductPrice.ForceRedirectionAfterAddingToCart)
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+    }
+    else
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity });
+    }
+
+    var addtowishlistlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.Wishlist, quantity = quantity });
+    var addtocomparelink = Url.RouteUrl("AddProductToCompare", new { productId = Model.Id });
+}
+
+
+<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" class="col-md-3 product-col">
+    <div class="product-list-wrap">
+        <figure>
+            <ul class="list-unstyled item-tag">
+                @if (Model.ProductPrice.OldPriceValue > 0)
+            {
+                decimal discount = Math.Round((Model.ProductPrice.OldPriceValue - Model.ProductPrice.PriceValue) / Model.ProductPrice.OldPriceValue * 100, 0);
+                    <li>
+                        <div class="sale-flash">
+                            <span class="tag">@discount%</span>
+                        </div>
+                    </li>
+                }
+            </ul>
+            @if (Model.MarkAsSellingFast)
+            {
+                <div class="selling-fast">
+                    <img src="~/Themes/IGudang/Content/images/tag-selling-fast.png">
+                </div>
+            }
+            @if (Model.MarkAsBestSeller)
+            {
+                <div class="best-sale">
+                    <img src="~/Themes/IGudang/Content/images/tag-best-sale.png">
+                </div>
+            }
+            <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+        </figure>
+        <div class="product-short-des">
+            <header class="product-name">
+                <h6>@Model.Name</h6>
+            </header>
+            <section class="item-price">
+                @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice))
+                {
+                    <span class="price old-price" style="font-size:small"><del>@Model.ProductPrice.OldPrice</del></span><br />
+                }
+                <span class="price actual-price" style="color:red;font-size:large">@Model.ProductPrice.Price</span>
+            </section>
+        </div>
+    </div>
+</a>

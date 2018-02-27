@@ -1,0 +1,80 @@
+﻿@using Nop.Web.Models.Catalog;
+@model IList<ProductOverviewModel>
+
+@if (Model.Count > 0)
+{
+    <div class="col-md-8 nopadding">
+        <div class="row product-row">
+            @foreach (var item in Model)
+            {
+                @Html.Partial("_ProductBoxEventBanner", item)
+            }
+            @*<div class="col-md-4 product-col">
+                <div class="product-list-wrap">
+                    <figure>
+                        <img src="~/Themes/IGudang/Content/images/product/product-01/s/1.jpg">
+                    </figure>
+                    <ul class="list-unstyled item-tag">
+                        <li>
+                            <div class="sale-flash">
+                                <span class="tag">50%</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="sale-flash sale-reduce">
+                                <span class="tag">Reduce</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="product-short-des">
+                        <header class="product-name">
+                            <h3>Nike Presto Blue Sneaker</h3>
+                        </header>
+                        <section class="item-price">
+                            RM 250.00
+                        </section>
+                        <footer class="item-add">
+                            <a href="#" class="btn btn-igudang">Add to Cart</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 product-col">
+                <div class="product-list-wrap">
+                    <figure>
+                        <img src="~/Themes/IGudang/Content/images/product/product-02/s/1.jpg">
+                    </figure>
+                    <div class="product-short-des">
+                        <header class="product-name">
+                            <h3> Nike Presto Blue Sneaker </h3>
+                        </header>
+                        <section class="item-price">
+                            RM 250.00
+                        </section>
+                        <footer class="item-add">
+                            <a href="#" class="btn btn-igudang">Add to Cart</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 product-col">
+                <div class="product-list-wrap">
+                    <figure>
+                        <img src="~/Themes/IGudang/Content/images/product/product-03/s/1.jpg">
+                    </figure>
+                    <div class="product-short-des">
+                        <header class="product-name">
+                            <h3> Nike Presto Blue Sneaker </h3>
+                        </header>
+                        <section class="item-price">
+                            RM 250.00
+                        </section>
+                        <footer class="item-add">
+                            <a href="#" class="btn btn-igudang">Add to Cart</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    </div>
+}

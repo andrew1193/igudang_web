@@ -1,0 +1,18 @@
+﻿@using Nop.Web.Models.Events;
+@model EventModel
+
+@if (Model.Id > 0)
+{
+    <div class="container clearfix pt-4 pb-4">
+        <div class="row">
+            <div class="col-md-12 home-hp-section" style="background-image:url(@Model.BackgroundPictureUrl)">
+                <div class="row nomargin">
+                    @Html.Action("HomepageEventBannerProducts", "Product", new { id = Model.Id })
+                    <div class="col-md-4 nopadding home-hot-section">
+                        @Html.Raw(Model.Description)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

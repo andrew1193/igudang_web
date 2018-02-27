@@ -1,0 +1,147 @@
+﻿@model ProductReviewOverviewModel
+@using System.Globalization
+@using Nop.Web.Models.Catalog;
+@{
+    int ratingPercent = 0;
+    decimal ratePer5 = 0;
+    if (Model.TotalReviews != 0)
+    {
+        ratingPercent = ((Model.RatingSum * 100) / Model.TotalReviews) / 5;
+        ratePer5 = (decimal)ratingPercent * 5 / 100;
+    }
+}
+
+<div class="col-md-3 mb-1">
+    <div class="detail-title nobottommargin">
+        <h5>Average Product Rating</h5>
+    </div>
+    <div class="product-rating igudang-product-rate fleft">
+        @if (ratingPercent <= 0)
+        {
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent > 0 && ratingPercent < 20)
+        {
+            <i class="icon-star-half-full rated"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent == 20)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent > 20 && ratingPercent < 40)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-half-full rated"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent == 40)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent > 40 && ratingPercent < 60)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-half-full rated"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent == 60)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-empty"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent > 60 && ratingPercent < 80)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-half-full rated"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent == 80)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-empty"></i>
+        }
+        else if (ratingPercent > 80 && ratingPercent < 100)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star-half-full rated"></i>
+        }
+        else if (ratingPercent == 100)
+        {
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+            <i class="icon-star3 rated"></i>
+        }
+    </div>
+    <div class="clear"></div>
+    <p class="nobottommargin">@ratePer5.ToString() out of 5</p>
+    <span>Total @Model.TotalReviews.ToString() review</span>
+</div>
+
+<div class="col-md-3 mb-1" style="display:none">
+    <ul class="skills">
+        <li data-percent="100">
+            <span>5 Star</span>
+            <div class="progress">
+                <div class="progress-percent"><div class="counter counter-inherit counter-instant"><span data-from="0" data-to="90" data-refresh-interval="30" data-speed="1100"></span></div></div>
+            </div>
+        </li>
+        <li data-percent="80">
+            <span>4 Star</span>
+            <div class="progress">
+                <div class="progress-percent"><div class="counter counter-inherit counter-instant"><span data-from="0" data-to="10" data-refresh-interval="30" data-speed="1100"></span></div></div>
+            </div>
+        </li>
+        <li data-percent="70">
+            <span>3 Star</span>
+            <div class="progress">
+                <div class="progress-percent"><div class="counter counter-inherit counter-instant"><span data-from="0" data-to="5" data-refresh-interval="30" data-speed="1100"></span></div></div>
+            </div>
+        </li>
+        <li data-percent="60">
+            <span>2 Star</span>
+            <div class="progress">
+                <div class="progress-percent"><div class="counter counter-inherit counter-instant"><span data-from="0" data-to="2" data-refresh-interval="20" data-speed="1100"></span></div></div>
+            </div>
+        </li>
+        <li data-percent="50">
+            <span>1 Star</span>
+            <div class="progress">
+                <div class="progress-percent"><div class="counter counter-inherit counter-instant"><span data-from="0" data-to="2" data-refresh-interval="30" data-speed="1100"></span></div></div>
+            </div>
+        </li>
+    </ul>
+</div>
+

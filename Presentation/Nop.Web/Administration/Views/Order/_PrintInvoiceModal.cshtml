@@ -1,0 +1,205 @@
+﻿@using Nop.Admin.Models.Orders
+@model List<OrderModel>
+
+
+@if (Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+        <div style="max-width: 600px; margin: auto;" class="email-container" data-id="@item.Id">
+            <!--[if mso]>
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" align="center">
+            <tr>
+            <td>
+            <![endif]-->
+            <!-- Email Header : BEGIN -->
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width: 600px;">
+                <tr>
+                    <td bgcolor="#ffffff" align="center" style="position: relative">
+                        <div class="title-wrap">
+                            <h2 style="font-family: sans-serif; color: #000;">Receiver Copy</h2>
+                        </div>
+                        <img src="@Url.Content(string.Format("~/Themes/IGudang/Content/images/receipt/title-bg.jpg", ""))" width="600" height="" alt="alt_text" border="0" align="center" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; margin: auto;" class="g-img">
+                    </td>
+                </tr>
+            </table>
+            <!-- Email Header : END -->
+            <!-- Email Body : BEGIN -->
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width: 750px;">
+
+                <tr>
+                    <td bgcolor="#ffffff" align="center" height="100%" valign="top" width="100%" style="padding-bottom: 0">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:680px;">
+                            <tr>
+                                <td align="center" valign="top" width="100%">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px;text-align: left;">
+                                        <tr>
+                                            <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 10px 10px 0;" class="stack-column-center">
+                                                <h3>Order# @item.Id</h3>
+                                                <ul style="list-style: none; padding: 0;">
+                                                    <li style="margin-bottom: 10px">@item.StoreName</li>
+                                                    <li style="margin-bottom: 10px"><span id="date-title">Date: </span><span id="date">@String.Format("{0:dddd, MMMM d, yyyy}", item.CreatedOn)</span></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Clear Spacer : BEGIN -->
+                <tr>
+                    <td aria-hidden="true" height="1" style="font-size: 0; line-height: 0; background: #fff; padding: 0 20px">
+                        <div style="background: #d5d5d5; height: 1px; width: 100%;"></div>
+                    </td>
+                </tr>
+                <!-- Clear Spacer : END -->
+                <!-- 2 Even Columns : BEGIN -->
+                <tr>
+                    <td bgcolor="#ffffff" align="center" height="100%" valign="top" width="100%" style="padding-bottom: 40px">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:680px; min-height: 200px">
+                            <tr>
+                                <td align="center" valign="top" width="50%">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;">
+                                        <tr>
+                                            <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 10px 10px 0;" class="stack-column-center">
+                                                <h3>Billing Address</h3>
+                                                <h4>@item.BillingAddress.FirstName @item.BillingAddress.LastName</h4>
+                                                <ul style="list-style: none; padding: 0;">
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Phone: </span><span>@item.BillingAddress.PhoneNumber</span></li>
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Address 1: </span><span>@item.BillingAddress.Address1</span></li>
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Address 2: </span><span>@item.BillingAddress.Address2</span></li>
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Payment Method: </span><span>@item.PaymentMethod</span></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td align="center" valign="top" width="50%">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px;text-align: left;">
+                                        <tr>
+                                            <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 10px 10px 0;" class="stack-column-center">
+                                                <h3>Shipping Adddress</h3>
+                                                <h4>@item.ShippingAddress.FirstName @item.ShippingAddress.LastName</h4>
+                                                <ul style="list-style: none; padding: 0;">
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Phone: </span><span>@item.ShippingAddress.PhoneNumber</span></li>
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Address 1: </span><span>@item.ShippingAddress.Address1</span></li>
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Address 2: </span><span>@item.ShippingAddress.Address2</span></li>
+                                                    <li style="margin-bottom: 5px"><span style="font-weight: bold">Shipping Method: </span><span>@item.ShippingMethod</span></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- Two Even Columns : END -->
+                <!-- 3 Even Columns : BEGIN -->
+                <tr>
+                    <td bgcolor="#ffffff" align="left" height="100%" valign="top" width="100%" style="padding-bottom: 40px">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:680px;">
+                            <tr>
+                                <td align="center" valign="top" width="100%" style="padding: 10px 0 0;">
+                                    <table role="presentation" cellspacing="1" cellpadding="1" border="1" width="100%" style="font-size: 14px; text-align: left;" class="item-table">
+                                        <thead>
+                                            <tr>
+                                                <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" class="firsttable">
+                                                    Name
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555">
+                                                    SKU
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555">
+                                                    Price
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555">
+                                                    QTY.
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" class="lasttable">
+                                                    Total
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (item.Items.Count > 0)
+                                            {
+                                                foreach (var item2 in item.Items)
+                                                {
+                                                    <tr>
+                                                        <td style="text-align: left; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                            @item2.ProductName
+                                                        </td>
+                                                        <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                            @item2.Sku
+                                                        </td>
+                                                        <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                            @item2.UnitPriceExclTax
+                                                        </td>
+                                                        <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                            @item2.Quantity
+                                                        </td>
+                                                        <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                            @item2.StrTotal
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td style="text-align: right; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; background-color: #d5d5d5" valign="top" colspan="4">
+                                                    Sub-Total
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                    <b>@item.OrderSubtotalExclTax</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; background-color: #d5d5d5" valign="top" colspan="4">
+                                                    Shipping
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                    <b>@item.OrderShippingExclTax</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; background-color: #d5d5d5" valign="top" colspan="4">
+                                                    Tax
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                    <b>@item.Tax</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; background-color: #d5d5d5" valign="top" colspan="4">
+                                                    Order Total
+                                                </td>
+                                                <td style="text-align: center; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555" valign="top">
+                                                    <b>@item.OrderTotal</b>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- 3 Even Columns : END -->
+            </table>
+            <!-- Email Body : END -->
+            <!--[if mso]>
+            </td>
+            </tr>
+            </table>
+            <![endif]-->
+        </div>
+        <hr />
+    }
+}
+
+

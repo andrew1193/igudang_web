@@ -1,0 +1,9 @@
+﻿Group: Widgets
+FriendlyName: Popup Maker
+SystemName: Widgets.PopupMaker
+Version: 1.00
+SupportedVersions: 3.90
+Author: pro nopCommerce (https://www.pronopcommerce.com)
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.PopupMaker.dll
+Description: The ultimate popup maker plugins that makes creating modal popups a breeze!

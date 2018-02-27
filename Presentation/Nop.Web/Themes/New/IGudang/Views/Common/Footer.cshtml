@@ -1,0 +1,219 @@
+﻿@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Services.Configuration
+@using Nop.Web.Models.Common
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Common;
+@using Nop.Web.Framework.Themes
+@using Nop.Web.Framework.UI
+
+
+@model FooterModel
+
+@{
+    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
+    var themeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    var storeId = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.Id;
+    var settingService = EngineContext.Current.Resolve<ISettingService>();
+    var removeCopyright = settingService.GetSettingByKey("pavilionthemesettings.removecopyright", false, storeId, true);
+    var removeDesignedBy = settingService.GetSettingByKey("pavilionthemesettings.removedesignedby", false, storeId, true);
+}
+<footer id="footer" class="noborder">
+
+    <!-- Footer First
+    ============================================= -->
+    <!-- #BeginLibraryItem "/Library/Footer-First.lbi" -->			<div class="section igudang-footer-section nomargin nopadding">
+        <div class="container">
+            <!-- Footer Widgets
+            ============================================= -->
+            <div class="row footer-widgets-wrap clearfix pb-4 pt-4">
+                <div class="col-md-6">
+
+                    <div class="col_half">
+                        <div class="widget widget_links igudang-widget clearfix">
+                            <h4>@T("Footer.Information")</h4>
+                            <ul>
+                                @if (Model.SitemapEnabled)
+                                {
+                                    <li><a href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a></li>
+                                }
+                                @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList())
+                                {
+                                    <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>
+                                }
+                                <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col_half col_last">
+                        <div class="widget widget_links igudang-widget clearfix">
+                            <h4>@T("Footer.CustomerService")</h4>
+                            <ul>
+                                <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a> </li>
+                                @if (Model.NewsEnabled)
+                                {
+                                    <li><a href="@Url.RouteUrl("NewsArchive")">@T("News")</a></li>
+                                }
+                                @if (Model.BlogEnabled)
+                                {
+                                    <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
+                                }
+                                @if (Model.ForumEnabled)
+                                {
+                                    <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
+                                }
+                                @if (Model.RecentlyViewedProductsEnabled)
+                                {
+                                    <li><a href="@Url.RouteUrl("RecentlyViewedProducts")">@T("Products.RecentlyViewedProducts")</a></li>
+                                }
+                                @if (Model.CompareProductsEnabled)
+                                {
+                                    <li><a href="@Url.RouteUrl("CompareProducts")">@T("Products.Compare.List")</a></li>
+                                }
+                                @if (Model.NewProductsEnabled)
+                                {
+                                    <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
+                                }
+                                @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList())
+                                {
+                                    <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="widget subscribe-widget igudang-widget clearfix">
+                        <h4>Exclusive Deals and Offers!</h4>
+                        <p class="mb-1">Subscribe and be the first to get great deals!</p>
+                        <div class="widget-subscribe-form-result"></div>
+                        <form id="widget-subscribe-form" action="include/subscribe.php" role="form" method="post" class="nobottommargin">
+                            <div style="margin-bottom: -10px;">
+                                <div class="row">
+                                    <div class="col-sm-7" style="margin-bottom:10px;">
+                                        <input type="email" id="widget-subscribe-form-email" name="widget-subscribe-form-email" class="form-control not-dark required email mb-1" placeholder="Enter your Email">
+                                        <button class="btn igudang-subscribe-btn" type="submit">Sign me up!</button>
+                                    </div>
+                                    <div class="col-sm-5" style="margin-bottom:10px;">
+                                        <ul class="list-inline list-unstyled nobottommargin">
+                                            <li>
+                                                <input id="radio-1" class="radio-style" name="radio-group" type="radio">
+                                                <label for="radio-1" class="radio-style-1-label radio-small igudang-small" style="color: #fff; font-weight: bold">Male</label>
+                                            </li>
+                                            <li>
+                                                <input id="radio-2" class="radio-style" name="radio-group" type="radio">
+                                                <label for="radio-2" class="radio-style-1-label radio-small igudang-small" style="color: #fff; font-weight: bold">Female</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="widget clearfix igudang-widget " style="margin-bottom: -20px;">
+                        <h4>We are now available </h4>
+                        <ul class="list-inline">
+                            <li><a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/home/app-01.png", themeName))"></a></li>
+                            <li><a href="#"><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/home/app-02.png", themeName))"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- .footer-widgets-wrap end -->
+        </div>
+    </div>
+    <!-- #EndLibraryItem --><!-- Footer First End -->
+    <!-- Footer Second
+    ============================================= -->
+    <!-- #BeginLibraryItem "/Library/Footer-Second.lbi" -->			<div class="section nomargin igudang-sec-footer pb-2 pt-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 widget_links mb-1">
+                    <div class="widget clearfix footer-payment">
+                        <h4 class="mb-1">Payment Methods</h4>
+                        <ul class="list-inline mb-2">
+                            <li><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/logo-visa.png", themeName))" class="img-small"></li>
+                            <li><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/logo-master.png", themeName))" class="img-small"></li>
+                            <li><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/logo-fpx.png", themeName))" class="img-small"></li>
+                            <li><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/logo-maybank.png", themeName))" class="img-small"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3 widget_links mb-1">
+                    <div class="widget clearfix footer-deliver">
+                        <h4 class="mb-1">Delivery Services</h4>
+                        <ul>
+                           
+                            <li><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/ninjavan-logo.png", themeName))" class="img-small"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3 widget_links mb-1">
+                    <div class="widget clearfix footer-verified">
+                        <h4 class="mb-1">Verified by</h4>
+                        <ul>
+                           
+                            <li><img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/seal_ctv_100.png", themeName))" class="img-xsmall"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #EndLibraryItem --><!-- Footer Second End -->
+    <!-- Footer About
+    ============================================= -->
+    @{
+
+        if (Request.Url.PathAndQuery.ToString().Equals("/") || Request.Url.PathAndQuery.ToString().Equals("/Home/Index"))
+        {
+
+            <div class="section nomargin igudang-footer-about pb-3 pt-3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <figure class="mb-2">
+
+                                <img src="@Url.Content(string.Format("~/Themes/{0}/Content/images/footer-logo.png", themeName))">
+                            </figure>
+                        </div>
+                        <div class="col-md-9">
+
+                            @Html.Action("TopicBlock", "Topic", new { systemName = "HomePageText" })
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        }
+
+
+    }
+   
+    <!-- Footer About End -->
+    <!-- Copyrights
+    ============================================= -->
+    <div id="copyrights" class="pb-1 pt-2">
+        <div class="container clearfix">
+            <div class="col_half">
+                Copyrights &copy;
+                <script type="text/javascript">var year = new Date();document.write(year.getFullYear());</script> iGudang. All rights reserved
+            </div>
+            <div class="col_half col_last tright">
+                <div class="fright clearfix">
+                    @Html.Action("Social", "Common")
+                </div>
+                <div class="clear"></div>
+
+            </div>
+        </div>
+    </div>
+    <!-- #copyrights end -->
+</footer><!-- #footer end -->

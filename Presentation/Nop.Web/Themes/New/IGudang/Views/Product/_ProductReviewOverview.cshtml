@@ -1,0 +1,40 @@
+﻿@model ProductReviewOverviewModel
+@using System.Globalization
+@using Nop.Web.Models.Catalog;
+@{
+    int ratingPercent = 0;
+    if (Model.TotalReviews != 0)
+    {
+        ratingPercent = ((Model.RatingSum * 100) / Model.TotalReviews) / 5;
+    }
+}
+
+
+
+@if (Model.AllowCustomerReviews)
+{
+    <ul class="list-inline nobottommargin fleft">
+        @if (Model.TotalReviews > 0)
+        {
+            <li>
+                <div class="product-rating igudang-product-rate">
+                    <div style="width: @(ratingPercent)%">
+                    </div>
+                </div>
+            </li>
+            <li>(@Model.TotalReviews)</li>
+            <li> | </li>
+            <li class="write-review-top"><a href="@Url.RouteUrl("ProductReviews", new { productId = Model.ProductId })">@T("Reviews.Overview.AddNew")</a></li>
+        }
+        else
+        {
+            <li class="write-review-top"><a href="@Url.RouteUrl("ProductReviews", new { productId = Model.ProductId })">@T("Reviews.Overview.First")</a></li>
+        }
+    </ul>
+}
+
+
+
+
+
+

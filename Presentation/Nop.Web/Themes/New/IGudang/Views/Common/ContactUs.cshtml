@@ -1,0 +1,112 @@
+﻿@model ContactUsModel
+@using Nop.Web.Models.Common;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ContactUs").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-contact-page");
+}
+
+
+<div class="content-wrap pt-2">
+
+    <div class="container clearfix">
+        <div class="accordion accordion-lg divcenter nobottommargin clearfix" style="max-width: 550px;">
+            <div class="acctitle"><i class="acc-closed icon-lock3"></i><i class="acc-open icon-info"></i>@T("PageTitle.ContactUs")</div>
+            <div class="acc_content clearfix">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col_full">
+                        @Html.LabelFor(model => model.FullName)@Html.RequiredHint()
+
+                        <input type="text" asp-for="FullName" name="register-form-name" value="" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.FullName)
+                    </div>
+                    <div class="col_full">
+                        @Html.LabelFor(model => model.Email)@Html.RequiredHint()
+
+                        <input type="text" asp-for="Email" name="register-form-name" value="" class="form-control" />
+
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+
+                    if (Model.SubjectEnabled)
+                    {
+                        <div class="col_full nobottommargin">
+                            @Html.LabelFor(model => model.Subject)
+
+
+                            <textarea asp-for="Subject" name="register-form-name" value="" class="form-control"></textarea>
+
+                            @Html.ValidationMessageFor(model => model.Subject)
+
+
+                        </div>
+                    }
+
+
+
+
+
+
+
+                    <div class="col_full nobottommargin">
+                        @Html.LabelFor(model => model.Enquiry)
+
+
+                        <textarea asp-for="Enquiry" name="register-form-name" value="" class="form-control"></textarea>
+
+                        @Html.ValidationMessageFor(model => model.Enquiry)
+
+
+                    </div>
+
+
+
+
+
+                    if (Model.DisplayCaptcha)
+                    {
+                        <div class="col_full">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                    }
+
+
+
+
+                    <div class="line line-sm"></div>
+                    <div class="center">
+
+                        <button class="button button-3d button-black nomargin" id="login-form-submit" type="submit" name="send-email">@T("ContactUs.Button")</button>
+
+
+
+                    </div>
+                }
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    .required {
+        color: red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+</style>
+
+
